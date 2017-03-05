@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>GDP</title>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<style>
+svg { border: solid #ccc 1px; }
+
+</style>
+</head>
+<body>
+<div id = "g2"></div>
+<script>
+var width = 960,
+    height = 500;
+
+var canvas2 = d3.select("#g2").append("canvas")
+    .attr("width", width)
+    .attr("height", height);
+
+var context2 = canvas2.node().getContext("2d");
+
+var projection2 = d3.geo.kavrayskiy7(),
+    graticule2 = d3.geo.graticule();
+
+var path2 = d3.geo.path()
+    .projection(projection2)
+    .context(context2);
+
+
+context2.strokeStyle = '#636363';
+context2.beginPath();
+    path2(graticule2());
+    context2.lineWidth = .1;
+    context2.stroke();
+
+context2.strokeStyle = '#969696';
+context2.beginPath();
+    path2(graticule2.outline());
+    context2.lineWidth = .3;
+    context2.stroke();
+
+
+var gdpColors = ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#41ab5d','#238b45','#005a32'];
+
+function find_gdpcolor(id, happy, gdp_map) {
+   var colorid = 0;
+   var gdp = 0;
+   for (var i = 0; i < happy.length; i++) {
+        if (id == happy[i].id) {
+              gdp = gdp_map[i];
+        }
+   }
+  
+   if (gdp <= 5000) {
+       colorid = 1;
+   }
+   if (gdp <= 20000 && gdp > 5000) {
+       colorid = 2;
+   }
+   if (gdp <= 40000 && gdp > 20000) {
+       colorid = 3;
+   }
+   if (gdp <= 60000 && gdp > 40000) {
+       colorid = 4;
+   }
+   if (gdp <= 80000 && gdp > 60000) {
+       colorid = 5;
+   }
+   if (gdp > 80000) {
+       colorid = 6;
+   }
+
+   return colorid;
+}
+
+d3.csv("happy.csv", function(error1, happy) {
+  d3.csv("data.csv", function(error2, data) {
+    if(error1) { console.log(error1); }
+    if(error2) { console.log(error2); }
+    var gdp_map = [];
+    var gdp = data.map(function (d) { return Number(d["GDP per capita ($)"]); }); 
+   
+    for (var i = 0; i < happy.length; i++) {
+         var country = happy[i].Country;
+         for (var j = 0; j < data.length; j++) {
+              if (data[j].Country == country) {
+                    gdp_map.push(gdp[j]);
+              }
+         }
+    }
+   
+d3.json("world-50m.json", function(error, world) {
+   if (error) throw error;
+
+   var countries = topojson.feature(world, world.objects.countries).features;
+   
+     countries.forEach(function(d, i) {
+          colorid = find_gdpcolor(d.id, happy, gdp_map);
+          context2.fillStyle = gdpColors[colorid];
+          context2.beginPath(); 
+          path2(d); 
+          context2.fill();
+      });
+  });
+});
+});
+
+
+</script>
+</body>
+</html>
