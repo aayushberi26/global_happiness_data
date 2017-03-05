@@ -26,12 +26,12 @@ body {
 <script>
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 1000 ;//- margin.left - margin.right,
-    height = 1000 ;//- margin.top - margin.bottom;
+    height = 500 ;//- margin.top - margin.bottom;
 
 
 
 //  x 
-var xValue = function(d) { return d["GDP(millions of USD)"];},
+var xValue = function(d) { return d["GDP per capita ($)"];},
     xScale = d3.scale.linear().range([0, width]), 
     xMap = function(d) { return xScale(xValue(d));}, 
     xAxis = d3.svg.axis().scale(xScale).orient("bottom");
@@ -57,7 +57,7 @@ d3.csv("data.csv", function(error, data) {
   // change string (from CSV) into number format
   data.forEach(function(d) {
     d["Happiness Score"] = +d["Happiness Score"];
-	d["GDP(millions of USD)"] = +d["GDP(millions of USD)"];
+	d["GDP per capita ($)"] = +d["GDP per capita ($)"];
   });
 
   xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
@@ -73,7 +73,7 @@ d3.csv("data.csv", function(error, data) {
       .attr("x", width)
       .attr("y", -6)
       .style("text-anchor", "end")
-      .text("GDP(millions of USD)");
+      .text("GDP per capita ($)");
 
   // y-axis
   svg.append("g")
