@@ -1,360 +1,124 @@
 <html>
-    <head>
-        <title>INFO 3300 - Data-driven Web Applications</title>
-        <script src="https://d3js.org/d3.v4.min.js"></script>
-        <style>
-            svg { border: solid #ccc 3px; }
-        </style>
-    </head>
-    <body>
-        <script>
-            var rawData;
-            // raw data is the absolute raw data
+<meta charset="utf-8">
 
-            var dateData;
-            // date data sorts the data by the "Dated" attribute
-            // whether or not the person was chosen to be dated
 
-            // the following 5 have the data for the specified regions
-            var newYorkData;
-            var caliData;
-            var texasData;
-            var ohioData;
-            var minnyData;
-            var chinaData;
-            var indiaData;
-            var sameRaceData;
-            var raceData;
-            var maleData;
-            var femaleData;
-            var prevMale;
-            var prevFemale;
+<style>
+body {
+  font: 11px sans-serif;
+}
 
-            // this function gets the location from rawData or dateData
-            // there are many ways to refer to the same state, so this
-            // makes sure we get all the values for each state we want
-            function getLocation(from) {
-                ny = ["Bronx Science", "Brooklyn", "brooklyn ny", "Brooklyn, NY", 
-                "Buffalo, NY", "Great Neck, NY", "I am from NYC", "Long Island", 
-                "Long Island, NY", "Manhattan", "New York", "new york", "new york city", 
-                "New York City", "NY", "NYC", "nyc", "NYC (Staten Island)", 
-                "Pougkeepsie NY", "Queens", "Rochester, NY", "Saratoga, NY", 
-                "Upstate New York", "Westchester County, N.Y.", "Westchester, new York",
-                "Westchester, NY"];
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
 
-                cali = ["california", "California", "CALIFORNIA", "California (West Coast)", 
-                "Los Angeles", "lOS aNGELES", "Los Angeles", "Los Angeles, CA", "Northern California", "Palm Springs, California",
-                "Palo Alto, CA", "Palo Alto, California", "San Diego", "San Diego, CA",
-                "San Francisco", "San Francisco Bay Area", "San Francisco, CA",
-                 "San Francisco(home)/Los Angeles(undergrad)", "San Francisco/LA",
-                 "Santa Barbara, California", "SF Bay Area, CA", "Southern California",
-                 "Torrance, CA"];
+.dot {
+  stroke: #000;
+}
 
-                 texas = ["Dallas, Texas", "Houston", "Texas"];
 
-                 ohio = ["Cincinnati, OH", "Cincinnati, Ohio", "Cleveland", "Ohio"];
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
 
-                 minn = ["Minneapolis", "Minneapolis, MN", "Minnesota"];
-
-                 china = ["BEIJING, CHINA", "China", "P. R. China", "Shanghai, China"]
-
-                 india = ["Bombay, India", "India", "New Delhi, India"]
-
-                if(ny.includes(from))
-                    return "New York"
-                else if(cali.includes(from))
-                    return "California";
-                else if(texas.includes(from))
-                    return "Texas"
-                else if(ohio.includes(from))
-                    return "Ohio"
-                else if(minn.includes(from))
-                    return "Minnesota"
-                else if(china.includes(from))
-                    return "China"
-                else if (india.includes(from))
-                    return "India"
-                else
-                    return from
-            }
-
-            // this gets the data for each state we want
-            // it finds the average of the attractiveness, intelligence, and fun attributes
-            // and also adds those to the return object
-            // this is the primary data we will be using
-
-            function getLocationData(date, location) {
-                var result = {Dated : date.key,
-                               Attr: 0, 
-                                Intel: 0,
-                                Fun: 0,
-                                Amb: 0,
-                                Sinc: 0,
-                                Shar: 0};
-                // keep track of the amount of data values we use
-                // at the end we will use this to find the average scores
-                var count = 0;
-                // some data rows had blanks in some categories, so we check if the value
-                // is NAN before adding
-                date.values.forEach(function (d) {
-                    if  (d.Dated == 1 && d.Location == location && !isNaN(parseFloat(d.Attr)) && !isNaN(parseFloat(d.Intel)) && !isNaN(parseFloat(d.Fun)) && !isNaN(parseFloat(d.Amb)) && !isNaN(parseFloat(d.Sinc)) && !isNaN(parseFloat(d.Shar))) {
-                        count ++;
-                        result.Attr += parseFloat(d.Attr);
-                        result.Intel += parseFloat(d.Intel);
-                        result.Fun += parseFloat (d.Fun);
-                        result.Amb += parseFloat (d.Amb);
-                        result.Sinc += parseFloat (d.Sinc);
-                        result.Shar += parseFloat (d.Shar);
-                    }
-
-                    if  (d.Dated == 0 && d.Location == location && !isNaN(parseFloat(d.Attr)) && !isNaN(parseFloat(d.Intel)) && !isNaN(parseFloat(d.Fun)) && !isNaN(parseFloat(d.Amb)) && !isNaN(parseFloat(d.Sinc)) && !isNaN(parseFloat(d.Shar))) {
-                        count ++;
-                        result.Attr += parseFloat(d.Attr);
-                        result.Intel += parseFloat(d.Intel);
-                        result.Fun += parseFloat (d.Fun);
-                        result.Amb += parseFloat (d.Amb);
-                        result.Sinc += parseFloat (d.Sinc);
-                        result.Shar += parseFloat (d.Shar);
-                    }
-                })
-                // this finds the averages
-                result.Count = count;
-                result.Attr = parseFloat(result.Attr) / count;
-                result.Intel = parseFloat(result.Intel) / count;
-                result.Fun = parseFloat(result.Fun) / count;
-                result.Sinc = parseFloat(result.Sinc) / count;
-                result.Amb = parseFloat(result.Amb) / count;
-                result.Shar = parseFloat(result.Shar) / count;
-                return result;
-            };
-
-            function parseLine(line) {
-                return {
-                    Dated: line["dec"],
-                    Location: getLocation(line["from"]),
-                    Attr: line["attr"],
-                    Intel: line["intel"],
-                    Fun: line["fun"],
-                    Amb: line["amb"],
-                    Sinc: line["sinc"],
-                    Shar: line["shar"],
-                    Samerace: line["samerace"],
-                    Gender: line["gender"],
-                    Prevamb: line["pf_o_amb"],
-                    Prevfun: line["pf_o_fun"],
-                    Prevint: line["pf_o_int"],
-                    Prevsha: line["pf_o_sha"],
-                    Prevsin: line["pf_o_sin"],
-                    Prevatt: line["pf_o_att"]
-                    };
-                };
-
-            d3.csv("speeddating.csv", parseLine, function (error, data) {
-                rawData = data;
-
-                dateData = d3.nest()
-                .key(function (d) { return d.Dated})
-                .entries(data);
-
-                raceData = d3.nest()
-                .key(function (d) { return d.Samerace})
-                .entries(data);
-
-                maleData = dateData.map(function(date) {
-                    var result = {Dated: date.key,
-                                Attr: 0, 
-                                Intel: 0,
-                                Fun: 0,
-                                Amb: 0,
-                                Sinc: 0,
-                                Shar: 0,
-                                Prevint: 0,
-                                Prevsin: 0,
-                                Prevsha: 0,
-                                Prevfun: 0,
-                                Prevamb: 0,
-                                Prevatt: 0};
-                // keep track of the amount of data values we use
-                // at the end we will use this to find the average scores
-                var count = 0;
-                // some data rows had blanks in some categories, so we check if the value
-                // is NAN before adding
-                date.values.forEach(function (d) {
-                    if  (d.Gender == 1 && !isNaN(parseFloat(d.Attr)) && !isNaN(parseFloat(d.Intel)) && !isNaN(parseFloat(d.Fun)) && !isNaN(parseFloat(d.Amb)) && !isNaN(parseFloat(d.Sinc)) && !isNaN(parseFloat(d.Shar))
-                         && !isNaN(parseFloat(d.Prevint)) && !isNaN(parseFloat(d.Prevsin)) && !isNaN(parseFloat(d.Prevsha))
-                         && !isNaN(parseFloat(d.Prevfun)) && !isNaN(parseFloat(d.Prevamb)) && !isNaN(parseFloat(d.Prevatt))) {
-                        d.Gender = 1;
-                        count ++;
-                        result.Attr += parseFloat(d.Attr);
-                        result.Intel += parseFloat(d.Intel);
-                        result.Fun += parseFloat (d.Fun);
-                        result.Amb += parseFloat (d.Amb);
-                        result.Sinc += parseFloat (d.Sinc);
-                        result.Shar += parseFloat (d.Shar);
-                        result.Prevint += parseFloat (d.Prevint);
-                        result.Prevatt += parseFloat (d.Prevatt);
-                        result.Prevamb += parseFloat (d.Prevamb);
-                        result.Prevsin += parseFloat (d.Prevsin);
-                        result.Prevsha += parseFloat (d.Prevsha);
-                        result.Prevfun += parseFloat (d.Prevfun);
-                    }
-                })
-                // this finds the averages
-                result.Count = count;
-                result.Attr = parseFloat(result.Attr) / count;
-                result.Intel = parseFloat(result.Intel) / count;
-                result.Fun = parseFloat(result.Fun) / count;
-                result.Sinc = parseFloat(result.Sinc) / count;
-                result.Amb = parseFloat(result.Amb) / count;
-                result.Shar = parseFloat(result.Shar) / count;
-                result.Prevint = parseFloat(result.Prevint) / count;
-                result.Prevamb = parseFloat(result.Prevamb) / count;
-                result.Prevatt = parseFloat(result.Prevatt) / count;
-                result.Prevsin = parseFloat(result.Prevsin) / count;
-                result.Prevsha = parseFloat(result.Prevsha) / count;
-                result.Prevfun = parseFloat(result.Prevfun) / count;
-                return result;
-
-                });
-
-                femaleData = dateData.map(function(date) {
-                    var result = {Dated : date.key,
-                                Attr: 0, 
-                                Intel: 0,
-                                Fun: 0,
-                                Amb: 0,
-                                Sinc: 0,
-                                Shar: 0,
-                                Prevint: 0,
-                                Prevsin: 0,
-                                Prevsha: 0,
-                                Prevfun: 0,
-                                Prevamb: 0,
-                                Prevatt: 0};
-                // keep track of the amount of data values we use
-                // at the end we will use this to find the average scores
-                var count = 0;
-                // some data rows had blanks in some categories, so we check if the value
-                // is NAN before adding
-                date.values.forEach(function (d) {
-                    if  (d.Gender == 0 && !isNaN(parseFloat(d.Attr)) && !isNaN(parseFloat(d.Intel)) && !isNaN(parseFloat(d.Fun)) && !isNaN(parseFloat(d.Amb)) && !isNaN(parseFloat(d.Sinc)) && !isNaN(parseFloat(d.Shar)) 
-                         && !isNaN(parseFloat(d.Prevint)) && !isNaN(parseFloat(d.Prevsin)) && !isNaN(parseFloat(d.Prevsha))
-                         && !isNaN(parseFloat(d.Prevfun)) && !isNaN(parseFloat(d.Prevamb)) && !isNaN(parseFloat(d.Prevatt))) {
-                        count ++;
-                        result.Gender = 0;
-                        result.Attr += parseFloat(d.Attr);
-                        result.Intel += parseFloat(d.Intel);
-                        result.Fun += parseFloat (d.Fun);
-                        result.Amb += parseFloat (d.Amb);
-                        result.Sinc += parseFloat (d.Sinc);
-                        result.Shar += parseFloat (d.Shar);
-                        result.Prevint += parseFloat (d.Prevint);
-                        result.Prevatt += parseFloat (d.Prevatt);
-                        result.Prevamb += parseFloat (d.Prevamb);
-                        result.Prevsin += parseFloat (d.Prevsin);
-                        result.Prevsha += parseFloat (d.Prevsha);
-                        result.Prevfun += parseFloat (d.Prevfun);
-                    }
-                })
-                // this finds the averages
-                result.Count = count;
-                result.Attr = parseFloat(result.Attr) / count;
-                result.Intel = parseFloat(result.Intel) / count;
-                result.Fun = parseFloat(result.Fun) / count;
-                result.Sinc = parseFloat(result.Sinc) / count;
-                result.Amb = parseFloat(result.Amb) / count;
-                result.Shar = parseFloat(result.Shar) / count;
-                result.Prevint = parseFloat(result.Prevint) / count;
-                result.Prevamb = parseFloat(result.Prevamb) / count;
-                result.Prevatt = parseFloat(result.Prevatt) / count;
-                result.Prevsin = parseFloat(result.Prevsin) / count;
-                result.Prevsha = parseFloat(result.Prevsha) / count;
-                result.Prevfun = parseFloat(result.Prevfun) / count;
-
-                return result;
-
-                });
+<script>
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 1000 ;//- margin.left - margin.right,
+    height = 500 ;//- margin.top - margin.bottom;
 
 
 
+//  x 
+var xValue = function(d) { return d["Economy (GDP per Capita)"];},
+    xScale = d3.scale.linear().range([0, width]), 
+    xMap = function(d) { return xScale(xValue(d));}, 
+    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+
+//  y
+var yValue = function(d) { return d["Happiness Score"];}, 
+    yScale = d3.scale.linear().range([height, 0]), 
+    yMap = function(d) { return yScale(yValue(d));}, 
+    yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+var cValue = function(d) { return d["Region"];},
+    color = d3.scale.category10();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right+300)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-                sameRaceData = raceData.map(function(race) {
+d3.csv("data.csv", function(error, data) {
 
-                var result = {Samerace : race.key,
-                               Attr: 0, 
-                                Intel: 0,
-                                Fun: 0,
-                                Amb: 0,
-                                Sinc: 0,
-                                Shar: 0};
-                // keep track of the amount of data values we use
-                // at the end we will use this to find the average scores
-                var count = 0;
-                // some data rows had blanks in some categories, so we check if the value
-                // is NAN before adding
-                race.values.forEach(function (d) {
-                    if  (d.Samerace == 1 && !isNaN(parseFloat(d.Attr)) && !isNaN(parseFloat(d.Intel)) && !isNaN(parseFloat(d.Fun)) && !isNaN(parseFloat(d.Amb)) && !isNaN(parseFloat(d.Sinc)) && !isNaN(parseFloat(d.Shar)))  {
-                        count ++;
-                        result.Attr += parseFloat(d.Attr);
-                        result.Intel += parseFloat(d.Intel);
-                        result.Fun += parseFloat (d.Fun);
-                        result.Amb += parseFloat (d.Amb);
-                        result.Sinc += parseFloat (d.Sinc);
-                        result.Shar += parseFloat (d.Shar);
-                    }
+  // change string (from CSV) into number format
+  data.forEach(function(d) {
+    d["Happiness Score"] = +d["Happiness Score"];
+  });
 
-                    if  (d.Samerace == 0 && !isNaN(parseFloat(d.Attr)) && !isNaN(parseFloat(d.Intel)) && !isNaN(parseFloat(d.Fun)) && !isNaN(parseFloat(d.Amb)) && !isNaN(parseFloat(d.Sinc)) && !isNaN(parseFloat(d.Shar))) {
-                        count ++;
-                        result.Attr += parseFloat(d.Attr);
-                        result.Intel += parseFloat(d.Intel);
-                        result.Fun += parseFloat (d.Fun);
-                        result.Amb += parseFloat (d.Amb);
-                        result.Sinc += parseFloat (d.Sinc);
-                        result.Shar += parseFloat (d.Shar);
-                    }
-                })
-                // this finds the averages
-                result.Attr = parseFloat(result.Attr) / count;
-                result.Intel = parseFloat(result.Intel) / count;
-                result.Fun = parseFloat(result.Fun) / count;
-                result.Sinc = parseFloat(result.Sinc) / count;
-                result.Amb = parseFloat(result.Amb) / count;
-                result.Shar = parseFloat(result.Shar) / count;
-                return result;
+  xScale.domain([d3.min(data, xValue)-.1, d3.max(data, xValue)+1]);
+  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
 
-                });
+  // x-axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("GDP per Capita");
 
-                newYorkData = dateData.map(function (date) {
-                    return getLocationData(date, "New York")
-                });
+  // y-axis
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Happiness Score");
 
-                caliData = dateData.map(function(date) {
-                    return getLocationData(date, "California");
-                });
+  // draw dots
+  svg.selectAll(".dot")
+      .data(data)
+    .enter().append("circle")
+      .attr("class", "dot")
+      .attr("r", 3.5)
+      .attr("cx", xMap)
+      .attr("cy", yMap)
+      .style("fill", function(d) { return color(cValue(d));}) ;
+	
+	var legend = svg.selectAll(".legend")
+      .data(color.domain())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-                ohioData = dateData.map(function(date) {
-                    return getLocationData(date, "Ohio");
-                });
+  // key colors
+  legend.append("rect")
+      .attr("x", width+30)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
 
-                texasData = dateData.map(function(date) {
-                    return getLocationData(date, "Texas");
-                });
+  // key text
+  legend.append("text")
+      .attr("x", width + 50)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "start")
+      .text(function(d) { return d;})
 
-                minnyData = dateData.map(function(date) {
-                    return getLocationData(date, "Minnesota");
-                });
+});
 
-                indiaData = dateData.map(function(date) {
-                    return getLocationData(date, "India");
-                });
-
-                chinaData = dateData.map(function(date) {
-                    return getLocationData(date, "China");
-                });
-
-            });
-
-        </script>
-    </body>
+</script>
+</body>
 </html>
