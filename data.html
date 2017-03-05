@@ -1,76 +1,111 @@
 <html>
 <meta charset="utf-8">
-
-
-<style>
-body {
-  font: 11px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.dot {
-  stroke: #000;
-}
-
-
-</style>
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <body>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<div id="svg1">
+</div>
 
 <script>
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 1000 ;//- margin.left - margin.right,
-    height = 500 ;//- margin.top - margin.bottom;
-
-
-
-//  x 
-var xValue = function(d) { return d["GDP per capita ($)"];},
-    xScale = d3.scale.linear().range([0, width]), 
-    xMap = function(d) { return xScale(xValue(d));}, 
-    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-
-//  y
-var yValue = function(d) { return d["Happiness Score"];}, 
-    yScale = d3.scale.linear().range([height, 0]), 
-    yMap = function(d) { return yScale(yValue(d));}, 
-    yAxis = d3.svg.axis().scale(yScale).orient("left");
-
-var cValue = function(d) { return d["Region"];},
-    color = d3.scale.category10();
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right+300)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
 d3.csv("data.csv", function(error, data) {
+    var svg1 = d3.select("#svg1")
+    .append("svg")
+    .attr("width", 1000)
+    .attr("height", 600)
+    .style("border", "solid 2px black");
+
+    // change string (from CSV) into number
+    // based on http://bl.ocks.org/weiglemc/6185069
+    data.forEach(function(d) {
+        d["Happiness Score"] = +d["Happiness Score"];
+        d["GDP per capita ($)"] = +d["GDP per capita ($)"];
+    });
+
+    var gdpExtent = d3.extent(data, function(d) {
+        return d["GDP per capita ($)"];
+    });
+    var happinessExtent = d3.extent(data, function(d) {
+        return d["Happiness Score"];
+    });
+
+    var gdpScale = d3.scaleLinear().domain(gdpExtent).range([30, 975]);
+    var happinessScale = d3.scaleLinear().domain(happinessExtent).range([575, 100]);
+    var gdpAxis = d3.axisBottom(gdpScale);
+    var happinessAxis = d3.axisLeft(happinessScale);
+    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
+
+    svg1.append("g").attr("transform", "translate(0, 575)").call(gdpAxis);
+    svg1.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    svg1.append("text")
+    .text("GDP per capita ($)")
+    .attr("x", 870)
+    .attr("y", 570)
+    .attr("font-size", "12px");
+
+    svg1.append("text")
+    .text("Happiness Score")
+    .attr("x", 0)
+    .attr("y", 110)
+    .attr("transform", "rotate(-90, 60, 120)")
+    .attr("font-size", "12px");
+
+
+    data.forEach(function (d) {
+        svg1.append("circle")
+        .attr("cx", gdpScale(d["GDP per capita ($)"]))
+        .attr("cy", happinessScale(d["Happiness Score"]))
+        .attr("r", 4.5)
+        .style("stroke", "black")
+        .style("fill", colorScale(d["Region"]))
+        .style("border", "solid 1px black");
+
+    })
+
+
+    /*
+
+
+  var margin = {top: 20, right: 20, bottom: 30, left: 40}
 
   // change string (from CSV) into number format
+  
+
+//  x 
+//var xExtent = function(d) { return d["GDP per capita ($)"];},
+var xScale = d3.scaleLinear().domain(gdpExtent).range([0, 500])
+    //xMap = function(d) { return xScale(xValue(d));}, 
+var xAxis = d3.axisBottom(xScale);
+
+var yValue = function(d) { return d["Happiness Score"];}
+
+//  y
+//var yValue = function(d) { return d["Happiness Score"];}, 
+var yScale = d3.scaleLinear().domain(happinessExtent).range([500, 0]) 
+    //yMap = function(d) { return yScale(yValue(d));}, 
+var yAxis = d3.axisLeft(yScale);
+
+//var cValue = function(d) { return d["Region"];},
+ //   color = d3.scale.category10();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", 500 + margin.left + margin.right+300)
+    .attr("height", 500 + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   data.forEach(function(d) {
     d["Happiness Score"] = +d["Happiness Score"];
 	d["GDP per capita ($)"] = +d["GDP per capita ($)"];
   });
 
-  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
 
   // x-axis
   svg.append("g")
       .attr("class", "x axis").style({ 'stroke': 'Black', 'fill': 'none', 'stroke-width': '1.5px'})
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", "translate(0," + 500 + ")")
       .call(xAxis)
     .append("text")
       .attr("class", "label")
-      .attr("x", width)
+      .attr("x", 500)
       .attr("y", -6)
       .style("text-anchor", "end")
       .text("GDP per capita ($)");
@@ -97,7 +132,7 @@ d3.csv("data.csv", function(error, data) {
       .attr("cy", yMap)
       .style("fill", function(d) { return color(cValue(d));}) ;
 	
-	var legend = svg.selectAll(".legend")
+var legend = svg.selectAll(".legend")
       .data(color.domain())
     .enter().append("g")
       .attr("class", "legend")
@@ -117,6 +152,7 @@ d3.csv("data.csv", function(error, data) {
       .attr("dy", ".35em")
       .style("text-anchor", "start")
       .text(function(d) { return d;})
+    */
 
 });
 
