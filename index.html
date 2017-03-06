@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>index</title>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="http://d3js.org/topojson.v2.min.js"></script>
+    </head>
+    <body>
+    <div id="map1" style="float: left; margin-bottom: 50px;">
+
+    </div>
+    <div id="map2" style="float: right; margin-bottom: 50px;">
+    </div>
+    <div id="scatter" style="margin-left: 150px;">
+    </div>
+        <script>
+
+    var map1 = d3.select("#map1").append("svg")
+              .attr("width", 630)
+              .attr("height", 393.75);
+
+    var map2 = d3.select("#map2").append("svg")
+              .attr("width", 630)
+              .attr("height", 393.75);
+
+    var scatter = d3.select("#scatter")
+    .append("svg")
+    .attr("width", 1000)
+    .attr("height", 600)
+    .style("border", "solid 2px black");
+
+    var projection = d3.geoEquirectangular();
+    var pathGenerator = d3.geoPath().projection(projection);
+
+    // the darker the color is, the higher happiness rank the coutry is
+    var happyColors = ['#feedde','#fdd0a2','#fdae6b','#fd8d3c','#e6550d','#a63603'];
+
+    var rawData;
+    var countries;
+    d3.csv("data.csv", function(error, data) {
+        if(error) { console.log(error); }
+
+        var scores = data.map(function (d) { return Number(d["Happiness Score"]); });
+        var gdp_map = data.map(function (d) { return Number(d["GDP per capita ($)"]); });
+
+ 
+      d3.json("world-50m.json", function(error, world) {
+          if (error) throw error;
+    
+          rawData = world;
+          countries = topojson.feature(rawData, rawData.objects.countries);
+          showHappyMap(data, scores);
+          showGDPMap(data, gdp_map);
+
+        data.forEach(function(d) {
+        d["Happiness Score"] = +d["Happiness Score"];
+        d["GDP per capita ($)"] = +d["GDP per capita ($)"];
+    });
+
+    var gdpExtent = d3.extent(data, function(d) {
+        return d["GDP per capita ($)"];
+    });
+    var happinessExtent = d3.extent(data, function(d) {
+        return d["Happiness Score"];
+    });
+
+    var gdpScale = d3.scaleLinear().domain(gdpExtent).range([30, 975]);
+    var happinessScale = d3.scaleLinear().domain(happinessExtent).range([575, 100]);
+    var gdpAxis = d3.axisBottom(gdpScale);
+    var happinessAxis = d3.axisLeft(happinessScale);
+    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
+
+    scatter.append("g").attr("transform", "translate(0, 575)").call(gdpAxis);
+    scatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    scatter.append("text")
+    .text("GDP per capita ($)")
+    .attr("x", 870)
+    .attr("y", 570)
+    .attr("font-size", "12px");
+
+    scatter.append("text")
+    .text("Happiness Score")
+    .attr("x", 0)
+    .attr("y", 110)
+    .attr("transform", "rotate(-90, 60, 120)")
+    .attr("font-size", "12px");
+
+
+    data.forEach(function (d) {
+        scatter.append("circle")
+        .attr("cx", gdpScale(d["GDP per capita ($)"]))
+        .attr("cy", happinessScale(d["Happiness Score"]))
+        .attr("r", 4.5)
+        .style("stroke", "black")
+        .style("fill", colorScale(d["Region"]))
+        .style("border", "solid 1px black");
+
+    })
+  
+       });
+    });
+    var happyBars  = [{"x": 90, "y": 350, "id": 0, text: "0 - 3"},  
+                {"x": 180, "y": 350, "id": 1, text: "3 - 4"}, 
+                {"x": 270, "y": 350, "id": 2, text: "4 - 5"},
+                {"x": 360, "y": 350, "id": 3, text: "5 - 6"}, 
+                {"x": 450, "y": 350, "id": 4, text: "6 - 7"}, 
+                {"x": 540, "y": 350, "id": 5, text: "7 - 10"}];
+
+    happyBars.forEach(function(d) {
+       map1.append("rect")
+          .attr("x", d.x)
+          .attr("y", d.y)
+          .attr("width", 90)
+          .attr("height", 10)
+          .style("fill", happyColors[d.id]);
+
+    });
+    happyBars.forEach(function(d) {
+        map1.append("text")
+        .style("font-size", "10pt")
+        .style("font-family","Tahoma")
+        .style("fill", happyColors[5])
+        .attr("x", d.x + 60)
+        .attr("y", d.y + 40)
+        .style("text-anchor", "middle")
+        .text(d.text);
+
+    });
+    map1.append("text")
+        .style("font-size", "8pt")
+        .style("font-family","Tahoma")
+        .style("fill", happyColors[5])
+        .attr("x", 40)
+        .attr("y", 380)
+        .style("text-anchor", "middle")
+        .text("Happiness Scores");
+    function showHappyMap(happy, scores) {
+  
+        projection.fitExtent([[0,0], [map1.attr("width"), map1.attr("height")-10]], countries);
+        pathGenerator = d3.geoPath().projection(projection);
+
+        var paths = map1.selectAll("path.country").data(countries.features);
+        paths.enter().append("path")
+        .attr("fill", function (country) {
+         var colorid = find_happycolor(country.id, happy, scores);
+          return happyColors[colorid];
+        })
+        .merge(paths) 
+        .attr("d", function (country) {
+          return pathGenerator(country);
+        });
+        }
+        function find_happycolor(id, happy, scores) {
+        var colorid = 0;
+        var happy_rank = 0;
+
+        for (var i = 0; i < happy.length; i++) {
+                if (id == happy[i].id) {
+                     happy_rank = scores[i];
+                }
+        }
+        if (happy_rank >= 7) {
+           colorid = 5;
+        }
+        if (happy_rank >= 6 && happy_rank < 7) {
+           colorid = 4;
+        }
+        if (happy_rank >= 5 && happy_rank < 6) {
+           colorid = 3;
+        }
+        if (happy_rank >= 4 && happy_rank < 5) {
+           colorid = 2;
+        }
+        if (happy_rank >= 3 && happy_rank < 4) {
+           colorid = 1;
+        }
+        return colorid;
+        }
+
+var gdpColors = ['#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
+var gdpBars  = [{"x": 90, "y": 350, "id": 0, text: "0 - 3"},  
+                {"x": 180, "y": 350, "id": 1, text: "3 - 4"}, 
+                {"x": 270, "y": 350, "id": 2, text: "4 - 5"},
+                {"x": 360, "y": 350, "id": 3, text: "5 - 6"}, 
+                {"x": 450, "y": 350, "id": 4, text: "6 - 7"}, 
+                {"x": 540, "y": 350, "id": 5, text: "7 - 10"}];
+
+    gdpBars.forEach(function(d) {
+       map2.append("rect")
+          .attr("x", d.x)
+          .attr("y", d.y)
+          .attr("width", 90)
+          .attr("height", 10)
+          .style("fill", gdpColors[d.id]);
+
+    });
+    gdpBars.forEach(function(d) {
+        map2.append("text")
+        .style("font-size", "10pt")
+        .style("font-family","Tahoma")
+        .style("fill", gdpColors[5])
+        .attr("x", d.x + 60)
+        .attr("y", d.y + 40)
+        .style("text-anchor", "middle")
+        .text(d.text);
+
+    });
+ map2.append("text")
+      .style("font-size", "7pt")
+      .style("font-family","Tahoma")
+      .style("fill", gdpColors[5])
+      .attr("x", 40)
+      .attr("y", 380)
+      .style("text-anchor", "middle")
+      .text("GDP per capita");
+map2.append("text")
+      .style("font-size", "7pt")
+      .style("font-family","Tahoma")
+      .style("fill", gdpColors[5])
+      .attr("x", 40)
+      .attr("y", 390)
+      .style("text-anchor", "middle")
+      .text("(thousands $)");
+
+function showGDPMap(data, gdp_map) {
+  
+  projection.fitExtent([[0,0], [map2.attr("width"),map2.attr("height")-10]], countries);
+  pathGenerator = d3.geoPath().projection(projection);
+  
+  var paths = map2.selectAll("path.country").data(countries.features);
+  paths.enter().append("path")
+  .attr("fill", function (country) {
+    var colorid = find_gdpcolor(country.id, data, gdp_map);
+    return gdpColors[colorid];
+  })
+  .merge(paths) 
+  .attr("d", function (country) {
+    return pathGenerator(country);
+  });
+}
+function find_gdpcolor(id, data, gdp_map) {
+   var colorid = 0;
+   var gdp = 0;
+   for (var i = 0; i < data.length; i++) {
+        if (id == data[i].id) {
+              gdp = gdp_map[i];
+        }
+   }  
+     if (gdp <= 5000) {
+        colorid = 0;
+     }
+     if (gdp <= 20000 && gdp > 5000) {
+       colorid = 1;
+     }
+     if (gdp <= 35000 && gdp > 20000) {
+       colorid = 2;
+     }
+     if (gdp <= 50000 && gdp > 35000) {
+       colorid = 3;
+     }
+     if (gdp <= 65000 && gdp > 50000) {
+       colorid = 4;
+     }
+     if (gdp > 65000) {
+       colorid = 5;
+     }
+   return colorid;
+}
+
+
+
+    </script>
+</body>
+</html>
