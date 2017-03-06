@@ -17,13 +17,14 @@ var svg2 = d3.select("#g2").append("svg")
     .attr("height", height);
 var projection = d3.geoEquirectangular();
 var pathGenerator = d3.geoPath().projection(projection);
-var gdpColors = ['#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
-var bars = [ {"x": 120, "y": 550, "id": 1, text: "< 5"}, 
-            {"x": 240, "y": 550, "id": 2, text: "5 - 20"}, 
-            {"x": 360, "y": 550, "id": 3, text: "20 - 35"},
-            {"x": 480, "y": 550, "id": 4, text: "35 - 50"}, 
-            {"x": 600, "y": 550, "id": 5, text: "50 - 65"}, 
-            {"x": 720, "y": 550, "id": 6, text: "> 65"}];
+//['#f7fcfd','#e5f5f9','#ccece6','#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b']
+var gdpColors = ['#e5f5f9','#99d8c9','#66c2a4','#238b45','#006d2c','#00441b'];
+var bars = [ {"x": 120, "y": 550, "id": 0, text: "< 5"}, 
+            {"x": 240, "y": 550, "id": 1, text: "5 - 20"}, 
+            {"x": 360, "y": 550, "id": 2, text: "20 - 35"},
+            {"x": 480, "y": 550, "id": 3, text: "35 - 50"}, 
+            {"x": 600, "y": 550, "id": 4, text: "50 - 65"}, 
+            {"x": 720, "y": 550, "id": 5, text: "> 65"}];
 bars.forEach(function(d) {
    svg2.append("rect")
       .attr("x", d.x)
@@ -36,7 +37,7 @@ bars.forEach(function(d) {
    svg2.append("text")
       .style("font-size", "10pt")
       .style("font-family","Tahoma")
-      .style("fill", gdpColors[d.id])
+      .style("fill", gdpColors[5])
       .attr("x", d.x + 50)
       .attr("y", d.y + 40)
       .style("text-anchor", "middle")
@@ -99,7 +100,7 @@ function find_gdpcolor(id, data, gdp_map) {
         colorid = 0;
      }
      if (gdp <= 20000 && gdp > 5000) {
-       colorid = 1;
+        colorid = 1;
      }
      if (gdp <= 35000 && gdp > 20000) {
        colorid = 2;
