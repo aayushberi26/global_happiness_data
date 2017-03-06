@@ -1,50 +1,90 @@
 <html>
 <head>
 <title>GDP</title>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v2.min.js"></script>
 <script src="//d3js.org/d3.v4.min.js"></script>
 <style>
 svg { border: solid #ccc 1px; }
-
 </style>
 </head>
 <body>
 <div id = "g2"></div>
 <script>
 var width = 960,
-    height = 500;
+    height = 600;
 
-var canvas2 = d3.select("#g2").append("canvas")
+var svg2 = d3.select("#g2").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-var context2 = canvas2.node().getContext("2d");
-
-var projection2 = d3.geo.kavrayskiy7(),
-    graticule2 = d3.geo.graticule();
-
-var path2 = d3.geo.path()
-    .projection(projection2)
-    .context(context2);
-
-
-context2.strokeStyle = '#636363';
-context2.beginPath();
-    path2(graticule2());
-    context2.lineWidth = .1;
-    context2.stroke();
-
-context2.strokeStyle = '#969696';
-context2.beginPath();
-    path2(graticule2.outline());
-    context2.lineWidth = .3;
-    context2.stroke();
+var projection = d3.geoEquirectangular();
+var pathGenerator = d3.geoPath().projection(projection);
 
 
 var gdpColors = ['#e5f5f9','#ccece6','#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
 
+var bars = [{"x": 80, "y": 550, "id": 0, text: "0 - 0.5"}, 
+            {"x": 180, "y": 550, "id": 1, text: "0.5 - 2"}, 
+            {"x": 280, "y": 550, "id": 2, text: "0.5 - 2"}, 
+            {"x": 380, "y": 550, "id": 3, text: "2 - 3"},
+            {"x": 480, "y": 550, "id": 4, text: "3 - 4"}, 
+            {"x": 580, "y": 550, "id": 5, text: "4 - 5"}, 
+            {"x": 680, "y": 550, "id": 6, text: "5 - 6"}, 
+            {"x": 780, "y": 550, "id": 7, text: "6 - 7"}];
+
+bars.forEach(function(d) {
+   svg2.append("rect")
+      .attr("x", d.x)
+      .attr("y", d.y)
+      .attr("width", 100)
+      .attr("height", 20)
+      .style("fill", gdpColors[d.id]);
+
+});
+bars.forEach(function(d) {
+   svg2.append("text")
+      .style("font-size", "10pt")
+      .style("font-family","Tahoma")
+      .style("fill", gdpColors[d.id])
+      .attr("x", d.x + 50)
+      .attr("y", d.y + 40)
+      .style("text-anchor", "middle")
+      .text(d.text);
+
+});
+
+var rawData;
+var countries;
+d3.csv("data.csv", function(error, data) {
+    if(error) { console.log(error); }
+
+     var gdp_map = data.map(function (d) { return Number(d["GDP per capita ($)"]); }); 
+      
+  d3.json("world-50m.json", function(error, world) {
+    if (error) throw error;
+
+    rawData = world;
+    countries = topojson.feature(rawData, rawData.objects.countries);
+    showGDPMap(data, gdp_map);
+  });
+});
+
+function showGDPMap(data, gdp_map) {
+  
+  projection.fitExtent([[0,0], [svg2.attr("width"), svg2.attr("height")-10]], countries);
+  pathGenerator = d3.geoPath().projection(projection);
+  
+  var paths = svg2.selectAll("path.country").data(countries.features);
+  paths.enter().append("path")
+  .attr("fill", function (country) {
+    var colorid = find_gdpcolor(country.id, data, gdp_map);
+    return gdpColors[colorid];
+  })
+  .merge(paths) 
+  .attr("d", function (country) {
+    return pathGenerator(country);
+  });
+}
 function find_gdpcolor(id, data, gdp_map) {
    var colorid = 0;
    var gdp = 0;
@@ -53,53 +93,30 @@ function find_gdpcolor(id, data, gdp_map) {
         if (id == data[i].id) {
               gdp = gdp_map[i];
         }
-   }
-  
-   if (gdp <= 5000) {
-       colorid = 1;
-   }
-   if (gdp <= 20000 && gdp > 5000) {
-       colorid = 2;
-   }
-   if (gdp <= 30000 && gdp > 20000) {
+   }  
+     if (gdp <= 5000) {
+        colorid = 1;
+     }
+     if (gdp <= 20000 && gdp > 5000) {
+         colorid = 2;
+     }
+     if (gdp <= 30000 && gdp > 20000) {
        colorid = 3;
-   }
-   if (gdp <= 40000 && gdp > 30000) {
+     }
+     if (gdp <= 40000 && gdp > 30000) {
        colorid = 4;
-   }
-   if (gdp <= 50000 && gdp > 40000) {
+     }
+     if (gdp <= 50000 && gdp > 40000) {
        colorid = 5;
-   }
-   if (gdp <= 60000 && gdp > 50000) {
+     }
+     if (gdp <= 60000 && gdp > 50000) {
        colorid = 6;
-   }
-   if (gdp > 60000) {
+     }
+     if (gdp > 60000) {
        colorid = 7;
-   }
-
+     }
    return colorid;
 }
-
-
-d3.csv("data.csv", function(error, data) {
-    if(error) { console.log(error); }
-     var gdp_map = data.map(function (d) { return Number(d["GDP per capita ($)"]); }); 
-   
-   
-d3.json("world-50m.json", function(error, world) {
-   if (error) throw error;
-
-   var countries = topojson.feature(world, world.objects.countries).features;
-   
-     countries.forEach(function(d, i) {
-          colorid = find_gdpcolor(d.id, data, gdp_map);
-          context2.fillStyle = gdpColors[colorid];
-          context2.beginPath(); 
-          path2(d); 
-          context2.fill();
-      });
-  });
-});
 
 </script>
 </body>

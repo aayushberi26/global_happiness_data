@@ -1,101 +1,113 @@
 <html>
 <head>
 <title>Happy</title>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v2.min.js"></script>
 <script src="//d3js.org/d3.v4.min.js"></script>
 <style>
 svg { border: solid #ccc 1px; }
-
 </style>
 </head>
 <body>
 <div id = "g1"></div>
 <script>
 var width = 960,
-    height = 500;
+    height = 600;
 
-var canvas = d3.select("#g1").append("canvas")
-    .attr("width", width)
-    .attr("height", height);
+var svg = d3.select("#g1").append("svg")
+          .attr("width", width)
+          .attr("height", height);
 
-var context = canvas.node().getContext("2d");
-
-var projection = d3.geo.kavrayskiy7(),
-    graticule = d3.geo.graticule();
-
-var path = d3.geo.path()
-    .projection(projection)
-    .context(context);
-
-
-context.strokeStyle = '#636363';
-context.beginPath();
-    path(graticule());
-    context.lineWidth = .1;
-    context.stroke();
-
-context.strokeStyle = '#969696';
-context.beginPath();
-    path(graticule.outline());
-    context.lineWidth = .3;
-    context.stroke();
+var projection = d3.geoEquirectangular();
+var pathGenerator = d3.geoPath().projection(projection);
 
 // the darker the color is, the higher happiness rank the coutry is
-var happyColors = ['#fef0d9','#a63603','#e6550d','#fd8d3c','#fdae6b','#fdd0a2'];
-function find_happycolor(id, ids) {
+var happyColors = ['#feedde','#fdd0a2','#fdae6b','#fd8d3c','#e6550d','#a63603'];
+
+var rawData;
+var countries;
+d3.csv("data.csv", function(error, happy) {
+    if(error) { console.log(error); }
+
+    var scores = happy.map(function (d) { return Number(d["Happiness Score"]); });
+ 
+  d3.json("world-50m.json", function(error, world) {
+      if (error) throw error;
+    
+      rawData = world;
+      countries = topojson.feature(rawData, rawData.objects.countries);
+      showHappyMap(happy, scores);
+  
+   });
+});
+var bars  = [{"x": 120, "y": 550, "id": 0, text: "0 - 3"},  
+            {"x": 240, "y": 550, "id": 2, text: "3 - 4"}, 
+            {"x": 360, "y": 550, "id": 3, text: "4 - 5"},
+            {"x": 480, "y": 550, "id": 4, text: "5 - 6"}, 
+            {"x": 600, "y": 550, "id": 5, text: "6 - 7"}, 
+            {"x": 720, "y": 550, "id": 1, text: "7 - 10"}];
+
+bars.forEach(function(d) {
+   svg.append("rect")
+      .attr("x", d.x)
+      .attr("y", d.y)
+      .attr("width", 120)
+      .attr("height", 20)
+      .style("fill", happyColors[d.id]);
+
+});
+bars.forEach(function(d) {
+   svg.append("text")
+      .style("font-size", "10pt")
+      .style("font-family","Tahoma")
+      .style("fill", happyColors[d.id])
+      .attr("x", d.x + 60)
+      .attr("y", d.y + 40)
+      .style("text-anchor", "middle")
+      .text(d.text);
+
+});
+function showHappyMap(happy, scores) {
+  
+  projection.fitExtent([[0,0], [svg.attr("width"), svg.attr("height")-10]], countries);
+  pathGenerator = d3.geoPath().projection(projection);
+
+  var paths = svg.selectAll("path.country").data(countries.features);
+  paths.enter().append("path")
+  .attr("fill", function (country) {
+    var colorid = find_happycolor(country.id, happy, scores);
+    return happyColors[colorid];
+  })
+  .merge(paths) 
+  .attr("d", function (country) {
+    return pathGenerator(country);
+  });
+}
+function find_happycolor(id, happy, scores) {
    var colorid = 0;
-   for (var i = 0; i < 16; i++) {// 7-8
-        if (id == ids[i]) {
-             colorid = 1;
+   var happy_rank = 0;
+
+   for (var i = 0; i < happy.length; i++) {
+        if (id == happy[i].id) {
+             happy_rank = scores[i];
         }
    }
-   for (var i = 16; i < 48; i++) { //6-7
-        if (id == ids[i]) {
-             colorid = 2;
-        }
+   if (happy_rank >= 7) {
+      colorid = 5;
    }
-   for (var i = 48; i < 100; i++) {//5-6
-        if (id == ids[i]) {
-             colorid = 3;
-        }
+   if (happy_rank >= 6 && happy_rank < 7) {
+      colorid = 4;
    }
-   for (var i = 100; i < 137; i++) {//4-5
-        if (id == ids[i]) {
-             colorid = 4;
-        }
+   if (happy_rank >= 5 && happy_rank < 6) {
+      colorid = 3;
    }
-   for (var i = 137; i < ids.length; i++) {//<4
-        if (id == ids[i]) {
-             colorid = 5;
-        }
+   if (happy_rank >= 4 && happy_rank < 5) {
+      colorid = 2;
+   }
+   if (happy_rank >= 3 && happy_rank < 4) {
+      colorid = 1;
    }
    return colorid;
 }
-
-d3.csv("data.csv", function(error, happy) {
-    if(error) { console.log(error); }
-    var ids = [];
-
-    for (var i = 0; i < happy.length; i++) {
-         ids.push(happy[i].id);
-    }
-  
-d3.json("world-50m.json", function(error, world) {
-   if (error) throw error;
-   var countries = topojson.feature(world, world.objects.countries).features;
-   
-     countries.forEach(function(d, i) {
-          colorid = find_happycolor(d.id, ids);
-          context.fillStyle = happyColors[colorid];
-          context.beginPath(); 
-          path(d); 
-          context.fill();
-      });
-  });
-});
-
 
 </script>
 </body>
