@@ -21,16 +21,15 @@ var projection = d3.geoEquirectangular();
 var pathGenerator = d3.geoPath().projection(projection);
 
 
-var gdpColors = ['#e5f5f9','#ccece6','#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
+var gdpColors = ['#ccece6','#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
 
-var bars = [{"x": 80, "y": 550, "id": 0, text: "0 - 0.5"}, 
-            {"x": 180, "y": 550, "id": 1, text: "0.5 - 2"}, 
-            {"x": 280, "y": 550, "id": 2, text: "0.5 - 2"}, 
-            {"x": 380, "y": 550, "id": 3, text: "2 - 3"},
-            {"x": 480, "y": 550, "id": 4, text: "3 - 4"}, 
-            {"x": 580, "y": 550, "id": 5, text: "4 - 5"}, 
-            {"x": 680, "y": 550, "id": 6, text: "5 - 6"}, 
-            {"x": 780, "y": 550, "id": 7, text: "6 - 7"}];
+var bars = [{"x": 100, "y": 550, "id": 0, text: "< 5"}, 
+            {"x": 200, "y": 550, "id": 1, text: "5 - 15"}, 
+            {"x": 300, "y": 550, "id": 2, text: "15 - 30"}, 
+            {"x": 400, "y": 550, "id": 3, text: "30 - 45"},
+            {"x": 500, "y": 550, "id": 4, text: "45 - 60"}, 
+            {"x": 600, "y": 550, "id": 5, text: "60 - 75"}, 
+            {"x": 700, "y": 550, "id": 6, text: "> 75"}];
 
 bars.forEach(function(d) {
    svg2.append("rect")
@@ -52,7 +51,22 @@ bars.forEach(function(d) {
       .text(d.text);
 
 });
-
+ svg2.append("text")
+      .style("font-size", "7pt")
+      .style("font-family","Tahoma")
+      .style("fill", gdpColors[5])
+      .attr("x", 50)
+      .attr("y", 560)
+      .style("text-anchor", "middle")
+      .text("GDP per capita");
+svg2.append("text")
+      .style("font-size", "7pt")
+      .style("font-family","Tahoma")
+      .style("fill", gdpColors[5])
+      .attr("x", 50)
+      .attr("y", 570)
+      .style("text-anchor", "middle")
+      .text("(thousands $)");
 var rawData;
 var countries;
 d3.csv("data.csv", function(error, data) {
@@ -97,23 +111,20 @@ function find_gdpcolor(id, data, gdp_map) {
      if (gdp <= 5000) {
         colorid = 1;
      }
-     if (gdp <= 20000 && gdp > 5000) {
+     if (gdp <= 15000 && gdp > 5000) {
          colorid = 2;
      }
-     if (gdp <= 30000 && gdp > 20000) {
+     if (gdp <= 30000 && gdp > 15000) {
        colorid = 3;
      }
-     if (gdp <= 40000 && gdp > 30000) {
+     if (gdp <= 60000 && gdp > 45000) {
        colorid = 4;
      }
-     if (gdp <= 50000 && gdp > 40000) {
+     if (gdp <= 75000 && gdp > 60000) {
        colorid = 5;
      }
-     if (gdp <= 60000 && gdp > 50000) {
+     if (gdp > 75000) {
        colorid = 6;
-     }
-     if (gdp > 60000) {
-       colorid = 7;
      }
    return colorid;
 }
