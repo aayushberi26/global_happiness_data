@@ -15,6 +15,10 @@
     <div id="scatter" style="margin-left: 150px;">
     </div>
         <script>
+        // Partially inspiring scatter plot code: http://bl.ocks.org/weiglemc/6185069
+        // Partially inspiring map code: http://bl.ocks.org/rveciana/f46df2272b289a9ce4e7
+        // gdp data from http://data.worldbank.org/data-catalog/GDP-ranking-table
+        // happiness data from https://www.kaggle.com/unsdsn/world-happiness
 
     var map1 = d3.select("#map1").append("svg")
               .attr("width", 630)
@@ -179,12 +183,12 @@
         }
 
 var gdpColors = ['#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
-var gdpBars  = [{"x": 90, "y": 350, "id": 0, text: "0 - 3"},  
-                {"x": 180, "y": 350, "id": 1, text: "3 - 4"}, 
-                {"x": 270, "y": 350, "id": 2, text: "4 - 5"},
-                {"x": 360, "y": 350, "id": 3, text: "5 - 6"}, 
-                {"x": 450, "y": 350, "id": 4, text: "6 - 7"}, 
-                {"x": 540, "y": 350, "id": 5, text: "7 - 10"}];
+var gdpBars  = [{"x": 90, "y": 350, "id": 0, text: "< 5"},  
+                {"x": 180, "y": 350, "id": 1, text: "5 - 20"}, 
+                {"x": 270, "y": 350, "id": 2, text: "20 - 35"},
+                {"x": 360, "y": 350, "id": 3, text: "35 - 50"}, 
+                {"x": 450, "y": 350, "id": 4, text: "50 - 65"}, 
+                {"x": 540, "y": 350, "id": 5, text: "> 65"}];
 
     gdpBars.forEach(function(d) {
        map2.append("rect")
