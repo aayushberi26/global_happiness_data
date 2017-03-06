@@ -23,13 +23,13 @@ var pathGenerator = d3.geoPath().projection(projection);
 
 var gdpColors = ['#ccece6','#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
 
-var bars = [{"x": 100, "y": 550, "id": 0, text: "< 5"}, 
-            {"x": 200, "y": 550, "id": 1, text: "5 - 15"}, 
-            {"x": 300, "y": 550, "id": 2, text: "15 - 30"}, 
-            {"x": 400, "y": 550, "id": 3, text: "30 - 45"},
-            {"x": 500, "y": 550, "id": 4, text: "45 - 60"}, 
-            {"x": 600, "y": 550, "id": 5, text: "60 - 75"}, 
-            {"x": 700, "y": 550, "id": 6, text: "> 75"}];
+var bars = [{"x": 150, "y": 550, "id": 0, text: "< 5"}, 
+            {"x": 250, "y": 550, "id": 1, text: "5 - 15"}, 
+            {"x": 350, "y": 550, "id": 2, text: "15 - 30"}, 
+            {"x": 450, "y": 550, "id": 3, text: "30 - 45"},
+            {"x": 550, "y": 550, "id": 4, text: "45 - 60"}, 
+            {"x": 650, "y": 550, "id": 5, text: "60 - 75"}, 
+            {"x": 750, "y": 550, "id": 6, text: "> 75"}];
 
 bars.forEach(function(d) {
    svg2.append("rect")
@@ -55,7 +55,7 @@ bars.forEach(function(d) {
       .style("font-size", "7pt")
       .style("font-family","Tahoma")
       .style("fill", gdpColors[5])
-      .attr("x", 50)
+      .attr("x", 100)
       .attr("y", 560)
       .style("text-anchor", "middle")
       .text("GDP per capita");
@@ -63,7 +63,7 @@ svg2.append("text")
       .style("font-size", "7pt")
       .style("font-family","Tahoma")
       .style("fill", gdpColors[5])
-      .attr("x", 50)
+      .attr("x", 100)
       .attr("y", 570)
       .style("text-anchor", "middle")
       .text("(thousands $)");
