@@ -59,13 +59,21 @@ bars.forEach(function(d) {
    svg.append("text")
       .style("font-size", "10pt")
       .style("font-family","Tahoma")
-      .style("fill", happyColors[d.id])
+      .style("fill", happyColors[5])
       .attr("x", d.x + 60)
       .attr("y", d.y + 40)
       .style("text-anchor", "middle")
       .text(d.text);
 
 });
+svg.append("text")
+      .style("font-size", "8pt")
+      .style("font-family","Tahoma")
+      .style("fill", happyColors[5])
+      .attr("x", 70)
+      .attr("y", 565)
+      .style("text-anchor", "middle")
+      .text("Happiness Scores");
 function showHappyMap(happy, scores) {
   
   projection.fitExtent([[0,0], [svg.attr("width"), svg.attr("height")-10]], countries);
