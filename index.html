@@ -3,32 +3,163 @@
     <head>
         <meta charset="utf-8">
         <title>index</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Lemonada" rel="stylesheet">
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <script src="http://d3js.org/topojson.v2.min.js"></script>
+        <style>
+           body {
+                font-family: 'Fira Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                background-color: GhostWhite;
+                }
+            h1 {
+                font-size: 72px;
+            }
+            h2 {
+                font-size: 18px;
+                text-align: center;
+            }
+            a {
+                text-decoration: none;
+            }
+        </style>
     </head>
     <body>
-    <div id="map1" style="float: left;">
+    <h1 style="text-align: center"> What really makes us happy? </h1>
+
+    <div class = "container" style="margin-bottom: 60px;">
+        <div class = "row">
+            <div class = "col-lg-2">
+                <br>
+            </div>
+        <div class = "col-lg-6"></div>
+            <div id="map1">
+            </div>
+            <div class = "row">
+                <div class = "col-lg-1"></div>
+                <div class = "col-lg-10">
+                    <h2> Above is a map of worldwide happiness scores. Happiness scores are calculated based on data from the Gallup World Poll. Respondents from a nationally representative sample from each country rated their current lives on a scale from 0 to 10, where 10 was the best possible life and 0 was the worst possible life. Data compiled from <a href="https://www.kaggle.com/unsdsn/world-happiness">here</a>.
+                    </h2>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="map2" style="float: left;">
+<div class = "container" style="margin-bottom: 60px;">
+    <div class = "row" style="margin-bottom: 10px">
+        <div class = "col-lg-1">
+            <br>
+        </div>
+        <div class = "col-lg-5">
+            <div id="map2">
+            </div>
+        </div>
+        <div class = "col-lg-5">
+            <div id ="scatter1">
+            </div>
+        </div>
     </div>
-    <div id="map3" style="float: left;">
+
+    <div class = "row">
+        <div class = "col-lg-1"></div>
+        <div class = "col-lg-10">
+            <h2> Above and left is a map of global GDP per capita. On the right is a plot mapping happiness score and GDP per capita. The GDP data is from <a href="http://data.worldbank.org/indicator/NY.GDP.PCAP.CD">here</a>.
+            </h2>
+        </div>
     </div>
-    <div id="map4" style="float: left;">
+
+
     </div>
-    <div id="map5" style="float: left;">
+</div>
+
+
+<div class = "container" style="margin-bottom: 60px;">
+    <div class = "row" style="margin-bottom: 10px">
+        <div class = "col-lg-1">
+            <br>
+        </div>
+        <div class = "col-lg-5">
+            <div id="map3">
+            </div>
+        </div>
+        <div class = "col-lg-5">
+            <div id ="scatter2">
+            </div>
+        </div>
     </div>
-    <div id="scatter" style="margin-left: 150px;">
+    <div class = "row">
+        <div class = "col-lg-1"></div>
+        <div class = "col-lg-10">
+            <h2> Above and left is a map of aggregate freedom scores. On the right is a plot mapping happiness score and freedom score. Freedom scores, calculated by freedomhouse, take into account political rights, civil liberties, and a quantitative "freedom scale" with 1 being most free and 7 being least free to calculate an aggregate freedom score. The data is from <a href="https://freedomhouse.org/report/freedom-world-2016/table-scores">here</a>.
+            </h2>
+        </div>
     </div>
+</div>
+
+<div class = "container" style="margin-bottom: 60px;">
+    <div class = "row" style="margin-bottom: 10px">
+        <div class = "col-lg-1">
+            <br>
+        </div>
+        <div class = "col-lg-5">
+            <div id="map4">
+            </div>
+        </div>
+        <div class = "col-lg-5">
+            <div id ="scatter3">
+            </div>
+        </div>
+    </div>
+        <div class = "row">
+        <div class = "col-lg-1"></div>
+        <div class = "col-lg-10">
+            <h2> Above and left is a map of life expectancy. On the right is a plot mapping happiness score and life expectancy. The data is from <a href="http://data.worldbank.org/indicator/NY.GDP.PCAP.CD">STUB IDK THE LINK</a>.
+            </h2>
+        </div>
+    </div>
+</div>
+
+<div class = "container" style="margin-bottom: 60px;">
+    <div class = "row" style="margin-bottom: 10px">
+        <div class = "col-lg-1">
+            <br>
+        </div>
+        <div class = "col-lg-5">
+            <div id="map5">
+            </div>
+        </div>
+        <div class = "col-lg-5">
+            <div id ="scatter4">
+            </div>
+        </div>
+    </div>
+    <div class = "row" style="margin-bottom: 10px">
+        <div class = "col-lg-1"></div>
+        <div class = "col-lg-10">
+            <h2> Above and left is a map of education indexes. On the right is a plot mapping happiness score and education index. The education index, calculated by the United Nations Development Programme, factors in mean years of schooling and expected years of schooling. The data is from <a href="http://hdr.undp.org/en/content/education-index">here</a>.
+            </h2>
+        </div>
+    </div>
+</div>
+
+        <!--
+    <div id="scatter" style=" float: right; margin-left: 150px;">
+    </div>
+    !-->
+
+
+
+    
+
         <script>
         // Partially inspiring scatter plot code: http://bl.ocks.org/weiglemc/6185069
         // Partially inspiring map code: http://bl.ocks.org/rveciana/f46df2272b289a9ce4e7
         // gdp data from http://data.worldbank.org/data-catalog/GDP-ranking-table
         // happiness data from https://www.kaggle.com/unsdsn/world-happiness
-    var width = 250;
-    var height = 180;
+    var width = 450;
+    var height = 281.25;
     var map1 = d3.select("#map1").append("svg")
-              .attr("width", width)
-              .attr("height", height);
+              .attr("width", 768)
+              .attr("height", 480);
     var map2 = d3.select("#map2").append("svg")
               .attr("width", width)
               .attr("height", height);
@@ -42,11 +173,31 @@
     var map5 = d3.select("#map5").append("svg")
               .attr("width", width)
               .attr("height", height);
-    var scatter = d3.select("#scatter")
+    var scatter1 = d3.select("#scatter1")
     .append("svg")
-    .attr("width", 1000)
-    .attr("height", 600)
+    .attr("width", 450)
+    .attr("height", 281.25)
     .style("border", "solid 2px black");
+
+    var scatter2 = d3.select("#scatter2")
+    .append("svg")
+    .attr("width", 450)
+    .attr("height", 281.25)
+    .style("border", "solid 2px black");
+
+    var scatter3 = d3.select("#scatter3")
+    .append("svg")
+    .attr("width", 450)
+    .attr("height", 281.25)
+    .style("border", "solid 2px black");
+
+    var scatter4 = d3.select("#scatter4")
+    .append("svg")
+    .attr("width", 450)
+    .attr("height", 281.25)
+    .style("border", "solid 2px black");
+
+
     var projection = d3.geoEquirectangular();
     var pathGenerator = d3.geoPath().projection(projection);
     // the darker the color is, the higher happiness rank the coutry is
@@ -82,29 +233,39 @@
     var gdpExtent = d3.extent(data, function(d) {
         return d["GDP per capita ($)"];
     });
+    var freedomExtent = d3.extent(data, function(d) {
+        return d["Freedom scores"];
+    });
+    var lifeExtent = d3.extent(data, function(d) {
+        return d["Life Expendancy"];
+    });
+    var educationExtent = d3.extent(data, function(d) {
+        return d["Education index"];
+    });
+
     var happinessExtent = d3.extent(data, function(d) {
         return d["Happiness Score"];
     });
-    var gdpScale = d3.scaleLinear().domain(gdpExtent).range([30, 975]);
-    var happinessScale = d3.scaleLinear().domain(happinessExtent).range([575, 100]);
+    var gdpScale = d3.scaleLinear().domain(gdpExtent).range([30, 425]);
+    var happinessScale = d3.scaleLinear().domain(happinessExtent).range([270, 30]);
     var gdpAxis = d3.axisBottom(gdpScale);
     var happinessAxis = d3.axisLeft(happinessScale);
     var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    scatter.append("g").attr("transform", "translate(0, 575)").call(gdpAxis);
-    scatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    scatter.append("text")
+    scatter1.append("g").attr("transform", "translate(0, 260)").call(gdpAxis);
+    scatter1.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    scatter1.append("text")
     .text("GDP per capita ($)")
-    .attr("x", 870)
-    .attr("y", 570)
+    .attr("x", 420)
+    .attr("y", 270)
     .attr("font-size", "12px");
-    scatter.append("text")
+    scatter1.append("text")
     .text("Happiness Score")
     .attr("x", 0)
-    .attr("y", 110)
+    .attr("y", 40)
     .attr("transform", "rotate(-90, 60, 120)")
     .attr("font-size", "12px");
     data.forEach(function (d) {
-        scatter.append("circle")
+        scatter1.append("circle")
         .attr("cx", gdpScale(d["GDP per capita ($)"]))
         .attr("cy", happinessScale(d["Happiness Score"]))
         .attr("r", 4.5)
@@ -112,9 +273,97 @@
         .style("fill", colorScale(d["Region"]))
         .style("border", "solid 1px black");
     })
+    // freedom
+    var freedomScale = d3.scaleLinear().domain(freedomExtent).range([30, 425]);
+    var freedomAxis = d3.axisBottom(freedomScale);
+    var happinessAxis = d3.axisLeft(happinessScale);
+    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
+    scatter2.append("g").attr("transform", "translate(0, 260)").call(freedomAxis);
+    scatter2.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    scatter2.append("text")
+    .text("Freedom Score")
+    .attr("x", 420)
+    .attr("y", 270)
+    .attr("font-size", "12px");
+    scatter2.append("text")
+    .text("Happiness Score")
+    .attr("x", 0)
+    .attr("y", 40)
+    .attr("transform", "rotate(-90, 60, 120)")
+    .attr("font-size", "12px");
+    data.forEach(function (d) {
+        scatter2.append("circle")
+        .attr("cx", freedomScale(d["Freedom scores"]))
+        .attr("cy", happinessScale(d["Happiness Score"]))
+        .attr("r", 4.5)
+        .style("stroke", "black")
+        .style("fill", colorScale(d["Region"]))
+        .style("border", "solid 1px black");
+    })
+
+    // life extent
+    var lifeScale = d3.scaleLinear().domain(lifeExtent).range([30, 425]);
+    var lifeAxis = d3.axisBottom(lifeScale);
+    var happinessAxis = d3.axisLeft(happinessScale);
+    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
+    scatter3.append("g").attr("transform", "translate(0, 260)").call(lifeAxis);
+    scatter3.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    scatter3.append("text")
+    .text("Freedom Score")
+    .attr("x", 420)
+    .attr("y", 270)
+    .attr("font-size", "12px");
+    scatter3.append("text")
+    .text("Happiness Score")
+    .attr("x", 0)
+    .attr("y", 40)
+    .attr("transform", "rotate(-90, 60, 120)")
+    .attr("font-size", "12px");
+    data.forEach(function (d) {
+        scatter3.append("circle")
+        .attr("cx", lifeScale(d["Life Expendancy"]))
+        .attr("cy", happinessScale(d["Happiness Score"]))
+        .attr("r", 4.5)
+        .style("stroke", "black")
+        .style("fill", colorScale(d["Region"]))
+        .style("border", "solid 1px black");
+    })
+
+    // education
+    var educationScale = d3.scaleLinear().domain(educationExtent).range([30, 425]);
+    var educationAxis = d3.axisBottom(educationScale);
+    var happinessAxis = d3.axisLeft(happinessScale);
+    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
+    scatter4.append("g").attr("transform", "translate(0, 260)").call(educationAxis);
+    scatter4.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    scatter4.append("text")
+    .text("Freedom Score")
+    .attr("x", 420)
+    .attr("y", 270)
+    .attr("font-size", "12px");
+    scatter4.append("text")
+    .text("Happiness Score")
+    .attr("x", 0)
+    .attr("y", 40)
+    .attr("transform", "rotate(-90, 60, 120)")
+    .attr("font-size", "12px");
+    data.forEach(function (d) {
+        scatter4.append("circle")
+        .attr("cx", educationScale(d["Education index"]))
+        .attr("cy", happinessScale(d["Happiness Score"]))
+        .attr("r", 4.5)
+        .style("stroke", "black")
+        .style("fill", colorScale(d["Region"]))
+        .style("border", "solid 1px black");
+    })
+
   
        });
     });
+
+
+
+
   
     function showHappyMap(happy, scores) {
   
