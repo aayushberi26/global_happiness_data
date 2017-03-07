@@ -236,9 +236,9 @@
     var freedomExtent = d3.extent(data, function(d) {
         return d["Freedom scores"];
     });
-    var lifeExtent = d3.extent(data, function(d) {
-        return d["Life Expendancy"];
-    });
+   // var lifeExtent = d3.extent(data, function(d) {
+       // return d["Life Expendancy"];
+    //});
     var educationExtent = d3.extent(data, function(d) {
         return d["Education index"];
     });
@@ -302,7 +302,7 @@
     })
 
     // life extent
-    var lifeScale = d3.scaleLinear().domain(lifeExtent).range([30, 425]);
+    var lifeScale = d3.scaleLinear().domain([50, 85]).range([30, 425]);
     var lifeAxis = d3.axisBottom(lifeScale);
     var happinessAxis = d3.axisLeft(happinessScale);
     var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
