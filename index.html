@@ -157,9 +157,11 @@
         // happiness data from https://www.kaggle.com/unsdsn/world-happiness
     var width = 450;
     var height = 281.25;
+    var happyWidth = 768;
+    var happyHeight = 480;
     var map1 = d3.select("#map1").append("svg")
-              .attr("width", 768)
-              .attr("height", 480);
+              .attr("width", happyWidth)
+              .attr("height", happyHeight);
     var map2 = d3.select("#map2").append("svg")
               .attr("width", width)
               .attr("height", height);
@@ -471,22 +473,22 @@
                      free_score = scores[i];
                 }               
         }  
-        if (free_score >= 1 && free_score < 1.5) {
+        if (free_score > 90) {
            colorid = 5;
         }
-        if (free_score >= 1.5 && free_score < 2.5) {
+        if (free_score > 70 && free_score <= 90) {
            colorid = 4;
         }
-        if (free_score >= 2.5 && free_score < 3) {
+        if (free_score > 50 && free_score <= 70) {
            colorid = 3;
         }
-        if (free_score >= 3 && free_score < 5 ) {
+        if (free_score > 30 && free_score <= 50 ) {
            colorid = 2;
         }
-        if (free_score >= 5 && free_score < 6) {
+        if (free_score > 10 && free_score <= 30) {
            colorid = 1;
         }
-        if (free_score >= 6) {
+        if (free_score <= 10) {
            colorid = 0;
         }
         return colorid;
@@ -584,23 +586,29 @@ var xbarScale = d3.scaleLinear()
 var ybarScale = d3.scaleLinear()
   .domain([0, 600])
   .range([0, height]);
-var bars = [ {"x": 120, "y": 550, "id": 0}, 
-            {"x": 240, "y": 550, "id": 1}, 
-            {"x": 360, "y": 550, "id": 2},
-            {"x": 480, "y": 550, "id": 3}, 
-            {"x": 600, "y": 550, "id": 4}, 
-            {"x": 720, "y": 550, "id": 5}];
+var xhbarScale = d3.scaleLinear()
+  .domain([0, 960])
+  .range([0, happyWidth]);
+var yhbarScale = d3.scaleLinear()
+  .domain([0, 600])
+  .range([0, happyHeight]);
+var bars = [ {"x": 160, "y": 550, "id": 0}, 
+            {"x": 280, "y": 550, "id": 1}, 
+            {"x": 400, "y": 550, "id": 2},
+            {"x": 520, "y": 550, "id": 3}, 
+            {"x": 640, "y": 550, "id": 4}, 
+            {"x": 760, "y": 550, "id": 5}];
 var happytexts = ["0 - 3", "3 - 4", "4 - 5", "5 - 6", "6 - 7", "7 - 10" ];
 var gdptexts = ["< 5", "5 - 20", "20 - 35", "35 - 50", "50 - 65", "> 65"];
-var freetexts = ["1 - 1.5", "1.5 - 2.5", "2.5 - 3", "3 - 5","5 - 6", " > 6"];
+var freetexts = ["< 10", "10 - 30", "30 - 50", "50 - 70","70 - 90", " > 90"];
 var lifetexts = ["< 50", "50 - 60", "60 - 65", "65 - 70", "70 - 80", "> 80"]
 var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 0.8"];
-    bars.forEach(function(d) {
+bars.forEach(function(d) {
       map1.append("rect")
-         .attr("x", xbarScale(d.x))
-         .attr("y", ybarScale(d.y))
-         .attr("width", xbarScale(120))
-         .attr("height", ybarScale(20))
+         .attr("x", xhbarScale(d.x))
+         .attr("y", yhbarScale(d.y))
+         .attr("width", xhbarScale(120))
+         .attr("height", yhbarScale(20))
          .style("fill", happyColors[d.id]);
       map2.append("rect")
          .attr("x", xbarScale(d.x))
@@ -630,12 +638,12 @@ var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 
         .style("font-size", "10pt")
         .style("font-family","Tahoma")
         .style("fill", happyColors[5])
-        .attr("x", xbarScale(d.x + 60))
-        .attr("y", ybarScale(d.y + 40))
+        .attr("x", xhbarScale(d.x + 60))
+        .attr("y", yhbarScale(d.y + 40))
         .style("text-anchor", "middle")
         .text(happytexts[d.id]);
       map2.append("text")
-        .style("font-size", "10pt")
+        .style("font-size", "7pt")
         .style("font-family","Tahoma")
         .style("fill", gdpColors[5])
         .attr("x", xbarScale(d.x + 60))
@@ -643,7 +651,7 @@ var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 
         .style("text-anchor", "middle")
         .text(gdptexts[d.id]);
       map3.append("text")
-        .style("font-size", "10pt")
+        .style("font-size", "7pt")
         .style("font-family","Tahoma")
         .style("fill", freeColors[5])
         .attr("x", xbarScale(d.x + 60))
@@ -651,7 +659,7 @@ var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 
         .style("text-anchor", "middle")
         .text(freetexts[d.id]);
       map4.append("text")
-        .style("font-size", "10pt")
+        .style("font-size", "7pt")
         .style("font-family","Tahoma")
         .style("fill", lifeColors[5])
         .attr("x", xbarScale(d.x + 60))
@@ -659,7 +667,7 @@ var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 
         .style("text-anchor", "middle")
         .text(lifetexts[d.id]);
       map5.append("text")
-        .style("font-size", "10pt")
+        .style("font-size", "7pt")
         .style("font-family","Tahoma")
         .style("fill", eduColors[5])
         .attr("x", xbarScale(d.x + 60))
@@ -669,18 +677,18 @@ var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 
     });
   
       map1.append("text")
-            .style("font-size", "7pt")
+            .style("font-size", "10pt")
             .style("font-family","Tahoma")
             .style("fill", happyColors[5])
-            .attr("x", xbarScale(65))
-            .attr("y", ybarScale(565))
+            .attr("x", xhbarScale(65))
+            .attr("y", yhbarScale(565))
             .style("text-anchor", "middle")
             .text("Happiness Scores");
       map2.append("text")
             .style("font-size", "7pt")
             .style("font-family","Tahoma")
             .style("fill", gdpColors[5])
-            .attr("x", xbarScale(70))
+            .attr("x", xbarScale(80))
             .attr("y", ybarScale(560))
             .style("text-anchor", "middle")
             .text("GDP per capita");
@@ -688,15 +696,15 @@ var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 
             .style("font-size", "7pt")
             .style("font-family","Tahoma")
             .style("fill", gdpColors[5])
-            .attr("x", xbarScale(70))
-            .attr("y", xbarScale(570))
+            .attr("x", xbarScale(80))
+            .attr("y", xbarScale(575))
             .style("text-anchor", "middle")
             .text("(thousands $)");
       map3.append("text")
             .style("font-size", "7pt")
             .style("font-family","Tahoma")
             .style("fill", freeColors[5])
-            .attr("x", xbarScale(65))
+            .attr("x", xbarScale(80))
             .attr("y", ybarScale(565))
             .style("text-anchor", "middle")
             .text("Freedom Scores");
@@ -704,7 +712,7 @@ var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 
             .style("font-size", "7pt")
             .style("font-family","Tahoma")
             .style("fill", lifeColors[5])
-            .attr("x", xbarScale(65))
+            .attr("x", xbarScale(80))
             .attr("y", ybarScale(565))
             .style("text-anchor", "middle")
             .text("Life Expendancy");
@@ -712,7 +720,7 @@ var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 
             .style("font-size", "7pt")
             .style("font-family","Tahoma")
             .style("fill", eduColors[5])
-            .attr("x", xbarScale(65))
+            .attr("x", xbarScale(80))
             .attr("y", ybarScale(565))
             .style("text-anchor", "middle")
             .text("Education Index");
