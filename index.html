@@ -62,7 +62,7 @@
     <div class = "row">
         <div class = "col-lg-1"></div>
         <div class = "col-lg-10">
-            <h2> Above and left is a map of global GDP per capita. On the right is a plot mapping happiness score and GDP per capita. The GDP data is from <a href="http://data.worldbank.org/indicator/NY.GDP.PCAP.CD">here</a>.
+            <h2> Above and left is a map of global GDP per capita, compiled by the World Bank. On the right is a plot mapping happiness score and GDP per capita. The GDP data is from <a href="http://data.worldbank.org/indicator/NY.GDP.PCAP.CD">here</a>.
             </h2>
         </div>
     </div>
@@ -89,7 +89,7 @@
     <div class = "row">
         <div class = "col-lg-1"></div>
         <div class = "col-lg-10">
-            <h2> Above and left is a map of aggregate freedom scores. On the right is a plot mapping happiness score and freedom score. Freedom scores, calculated by freedomhouse, take into account political rights, civil liberties, and a quantitative "freedom scale" with 1 being most free and 7 being least free to calculate an aggregate freedom score. The data is from <a href="https://freedomhouse.org/report/freedom-world-2016/table-scores">here</a>.
+            <h2> Above and left is a map of aggregate freedom scores. On the right is a plot mapping happiness score and freedom score. Freedom scores, calculated by Freedomhouse, take into account political rights, civil liberties, and a quantitative "freedom scale" with 1 being most free and 7 being least free to calculate an aggregate freedom score. The data is from <a href="https://freedomhouse.org/report/freedom-world-2016/table-scores">here</a>.
             </h2>
         </div>
     </div>
@@ -112,7 +112,7 @@
         <div class = "row">
         <div class = "col-lg-1"></div>
         <div class = "col-lg-10">
-            <h2> Above and left is a map of life expectancy. On the right is a plot mapping happiness score and life expectancy. The data is from <a href="http://data.worldbank.org/indicator/NY.GDP.PCAP.CD">STUB IDK THE LINK</a>.
+            <h2> Above and left is a map of life expectancy. Life expectancy was compiled by InfoPlease. On the right is a plot mapping happiness score and life expectancy. The data is from <a href="http://www.infoplease.com/world/statistics/life-expectancy-country.html">here</a>.
             </h2>
         </div>
     </div>
@@ -248,6 +248,8 @@
     var happinessExtent = d3.extent(data, function(d) {
         return d["Happiness Score"];
     });
+
+    // gdp
     var gdpScale = d3.scaleLinear().domain(gdpExtent).range([30, 425]);
     var happinessScale = d3.scaleLinear().domain(happinessExtent).range([270, 30]);
     var gdpAxis = d3.axisBottom(gdpScale);
@@ -715,7 +717,7 @@ bars.forEach(function(d) {
             .attr("x", xbarScale(80))
             .attr("y", ybarScale(565))
             .style("text-anchor", "middle")
-            .text("Life Expendancy");
+            .text("Life Expectancy");
       map5.append("text")
             .style("font-size", "7pt")
             .style("font-family","Tahoma")
