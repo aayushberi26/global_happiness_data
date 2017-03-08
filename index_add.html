@@ -147,8 +147,7 @@
     </div>
 </div>
 
-<div id = "key" style="margin-bottom: 60px;">
-</div>
+
 
     <script>
     // Partially inspiring scatter plot code: http://bl.ocks.org/weiglemc/6185069
@@ -435,6 +434,161 @@
 			.attr("fill", "none");
 			}			
     })
+	var	yi = 285;
+
+	for(var i = 1; i< 5; i++){
+		scatter1.append("rect")
+			.attr("x", 10)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter1.append("text")
+			.text(legend[i])
+			.attr("x", 25)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+			
+		scatter2.append("rect")
+			.attr("x", 10)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter2.append("text")
+			.text(legend[i])
+			.attr("x", 25)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+
+		scatter3.append("rect")
+			.attr("x", 10)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter3.append("text")
+			.text(legend[i])
+			.attr("x", 25)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+
+		scatter4.append("rect")
+			.attr("x", 10)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter4.append("text")
+			.text(legend[i])
+			.attr("x", 25)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");			
+		yi += 15;
+
+	}	
+	var	yi = 285;	
+	for(var i = 5; i< 9; i++){
+		scatter1.append("rect")
+			.attr("x", 175)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter1.append("text")
+			.text(legend[i])
+			.attr("x", 190)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+			
+		scatter2.append("rect")
+			.attr("x", 175)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter2.append("text")
+			.text(legend[i])
+			.attr("x", 190)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+
+		scatter3.append("rect")
+			.attr("x", 175)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter3.append("text")
+			.text(legend[i])
+			.attr("x", 190)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+
+		scatter4.append("rect")
+			.attr("x", 175)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter4.append("text")
+			.text(legend[i])
+			.attr("x", 190)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");			
+		yi += 15;		
+	}
+	var	yi = 285;	
+	for(var i = 9; i< 11; i++){
+		scatter1.append("rect")
+			.attr("x", 325)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter1.append("text")
+			.text(legend[i])
+			.attr("x", 340)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+
+		scatter2.append("rect")
+			.attr("x", 325)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter2.append("text")
+			.text(legend[i])
+			.attr("x", 340)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");	
+
+		scatter3.append("rect")
+			.attr("x", 325)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter3.append("text")
+			.text(legend[i])
+			.attr("x", 340)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+	
+		scatter4.append("rect")
+			.attr("x", 325)
+			.attr("y", yi)
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", colorScale(legend[i]))
+		scatter4.append("text")
+			.text(legend[i])
+			.attr("x", 340)
+			.attr("y", yi+7)
+			.attr("font-size", "10px");
+		yi += 15;			
+	}	
 
  function showHappyMap(happy, scores) {
   
@@ -674,36 +828,7 @@ var lifetexts = ["< 50", "50 - 60", "60 - 65", "65 - 70", "70 - 80", "> 80"]
 var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 0.8"];
 
 
-var key = d3.select('#key')
-	.append("svg")
-	.attr("width", 200)
-    .attr("height", 200)
-    .style("border", "solid 2px black");
-key.append("text")
-	.text("Key")
-	.attr("x", 90)
-	.attr("y", 10)
-	.attr("font-size", "12px")
-	.attr("font-weight", "bold");
-	
-var	yi = 20;
 
-for(var i = 1; i< legend.length; i++){
-		
-	key.append("rect")
-		.attr("x", 10)
-		.attr("y", yi)
-		.attr("width", 10)
-		.attr("height", 10)
-		.style("fill", colorScale(legend[i]))
-	key.append("text")
-		.text(legend[i])
-		.attr("x", 25)
-		.attr("y", yi+7)
-		.attr("font-size", "10px");
-	yi += 15;
-
-	}
 
 bars.forEach(function(d) {
       map1.append("rect")
