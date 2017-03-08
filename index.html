@@ -33,7 +33,7 @@
                 <br>
             </div>
         <div class = "col-lg-6"></div>
-            <div id="map1">
+            <div id="happyMap">
             </div>
             <div class = "row">
                 <div class = "col-lg-1"></div>
@@ -50,11 +50,11 @@
             <br>
         </div>
         <div class = "col-lg-5">
-            <div id="map2">
+            <div id="gdpMap">
             </div>
         </div>
         <div class = "col-lg-5">
-            <div id ="scatter1">
+            <div id ="gdpScatter">
             </div>
         </div>
     </div>
@@ -80,11 +80,11 @@
             <br>
         </div>
         <div class = "col-lg-5">
-            <div id="map3">
+            <div id="freedomMap">
             </div>
         </div>
         <div class = "col-lg-5">
-            <div id ="scatter2">
+            <div id ="freedomScatter">
             </div>
         </div>
     </div>
@@ -104,11 +104,11 @@
             <br>
         </div>
         <div class = "col-lg-5">
-            <div id="map4">
+            <div id="lifeMap">
             </div>
         </div>
         <div class = "col-lg-5">
-            <div id ="scatter3">
+            <div id ="lifeScatter">
             </div>
         </div>
     </div>
@@ -129,11 +129,11 @@
             <br>
         </div>
         <div class = "col-lg-5">
-            <div id="map5">
+            <div id="eduMap">
             </div>
         </div>
         <div class = "col-lg-5">
-            <div id ="scatter4">
+            <div id ="eduScatter">
             </div>
         </div>
     </div>
@@ -161,41 +161,41 @@
     var height = 350;
     var happyWidth = 896;
     var happyHeight = 560;
-    var map1 = d3.select("#map1").append("svg")
+    var happyMap = d3.select("#happyMap").append("svg")
               .attr("width", happyWidth)
               .attr("height", happyHeight);
-    var map2 = d3.select("#map2").append("svg")
+    var gdpMap = d3.select("#gdpMap").append("svg")
               .attr("width", width)
               .attr("height", height);
     
-    var map3 = d3.select("#map3").append("svg")
+    var freedomMap = d3.select("#freedomMap").append("svg")
               .attr("width", width)
               .attr("height", height);
-    var map4 = d3.select("#map4").append("svg")
+    var lifeMap = d3.select("#lifeMap").append("svg")
               .attr("width", width)
               .attr("height", height);
-    var map5 = d3.select("#map5").append("svg")
+    var eduMap = d3.select("#eduMap").append("svg")
               .attr("width", width)
               .attr("height", height);
-    var scatter1 = d3.select("#scatter1")
+    var gdpScatter = d3.select("#gdpScatter")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
     .style("border", "solid 2px black");
 
-    var scatter2 = d3.select("#scatter2")
+    var freedomScatter = d3.select("#freedomScatter")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
     .style("border", "solid 2px black");
 
-    var scatter3 = d3.select("#scatter3")
+    var lifeScatter = d3.select("#lifeScatter")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
     .style("border", "solid 2px black");
 
-    var scatter4 = d3.select("#scatter4")
+    var eduScatter = d3.select("#eduScatter")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -267,19 +267,19 @@
     var gdpAxis = d3.axisBottom(gdpScale);
     var happinessAxis = d3.axisLeft(happinessScale);
     var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    scatter1.append("g").attr("transform", "translate(0, 260)").call(gdpAxis);
-    scatter1.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    scatter1.append("text")
+    gdpScatter.append("g").attr("transform", "translate(0, 260)").call(gdpAxis);
+    gdpScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    gdpScatter.append("text")
     .text("GDP per capita ($1,000)")
     .attr("x", 320)
     .attr("y", 255)
     .attr("font-size", "10px");
-    scatter1.append("text")
+    gdpScatter.append("text")
     .text("Happiness Score")
     .attr("x", 5)
     .attr("y", 20)
     .attr("font-size", "10px");
-	scatter1.append("text")
+	gdpScatter.append("text")
     .text("Happiness Score vs. GDP per capita")
     .attr("x", 140)
     .attr("y", 20);
@@ -288,7 +288,7 @@
 	var legend = [];
     data.forEach(function (d) {
 		if(d["GDP per capita ($)"]>0){
-			scatter1.append("circle")
+			gdpScatter.append("circle")
 			.attr("cx", gdpScale(d["GDP per capita ($)"]/1000))
 			.attr("cy", happinessScale(d["Happiness Score"]))
 			.attr("r", 4.5)
@@ -297,7 +297,7 @@
 			.style("border", "solid 1px black");
 		}
 		if(d["Country"] == "Hong Kong" || d["Country"] == "Qatar" || d["Country"] == "Singapore" || d["Country"] == "Luxembourg" ){
-			scatter1.append("circle")
+			gdpScatter.append("circle")
 			.attr("cx", gdpScale(d["GDP per capita ($)"]/1000))
 			.attr("cy", happinessScale(d["Happiness Score"]))
 			.attr("r", 8)
@@ -321,26 +321,26 @@
     var freedomAxis = d3.axisBottom(freedomScale);
     var happinessAxis = d3.axisLeft(happinessScale);
     var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    scatter2.append("g").attr("transform", "translate(0, 260)").call(freedomAxis);
-    scatter2.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    scatter2.append("text")
+    freedomScatter.append("g").attr("transform", "translate(0, 260)").call(freedomAxis);
+    freedomScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    freedomScatter.append("text")
     .text("Freedom Score")
     .attr("x", 360)
     .attr("y", 255)
     .attr("font-size", "10px");
-    scatter2.append("text")
+    freedomScatter.append("text")
     .text("Happiness Score")
     .attr("x", 5)
     .attr("y", 20)
     .attr("font-size", "10px");
-	scatter2.append("text")
+	freedomScatter.append("text")
     .text("Happiness Score vs. Freedom Score")
     .attr("x", 140)
     .attr("y", 20);
 
     data.forEach(function (d) {
 		if(d["Freedom scores"]>0){
-			scatter2.append("circle")
+			freedomScatter.append("circle")
 			.attr("cx", freedomScale(d["Freedom scores"]))
 			.attr("cy", happinessScale(d["Happiness Score"]))
 			.attr("r", 4.5)
@@ -359,26 +359,26 @@
     var lifeAxis = d3.axisBottom(lifeScale);
     var happinessAxis = d3.axisLeft(happinessScale);
     var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    scatter3.append("g").attr("transform", "translate(0, 260)").call(lifeAxis);
-    scatter3.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    scatter3.append("text")
+    lifeScatter.append("g").attr("transform", "translate(0, 260)").call(lifeAxis);
+    lifeScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    lifeScatter.append("text")
     .text("Life Expectancy")
     .attr("x", 360)
     .attr("y", 255)
     .attr("font-size", "10px");
-    scatter3.append("text")
+    lifeScatter.append("text")
     .text("Happiness Score")
     .attr("x", 5)
     .attr("y", 20)
     .attr("font-size", "10px");
-	scatter3.append("text")
+	lifeScatter.append("text")
     .text("Happiness Score vs. Life Expectancy")
     .attr("x", 140)
     .attr("y", 20);
 	
     data.forEach(function (d) {
 		if(d["Life Expendancy"]>0){
-			scatter3.append("circle")
+			lifeScatter.append("circle")
 			.attr("cx", lifeScale(d["Life Expendancy"]))
 			.attr("cy", happinessScale(d["Happiness Score"]))
 			.attr("r", 4.5)
@@ -387,7 +387,7 @@
 			.style("border", "solid 1px black");
 		}
 		if(d["Country"] == "Somalia" || d["Country"] == "Syria"){
-			scatter3.append("circle")
+			lifeScatter.append("circle")
 			.attr("cx", lifeScale(d["Life Expendancy"]))
 			.attr("cy", happinessScale(d["Happiness Score"]))
 			.attr("r", 8)
@@ -402,26 +402,26 @@
     var educationAxis = d3.axisBottom(educationScale);
     var happinessAxis = d3.axisLeft(happinessScale);
     var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    scatter4.append("g").attr("transform", "translate(0, 260)").call(educationAxis);
-    scatter4.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    scatter4.append("text")
+    eduScatter.append("g").attr("transform", "translate(0, 260)").call(educationAxis);
+    eduScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+    eduScatter.append("text")
     .text("Education Index")
     .attr("x", 360)
     .attr("y", 255)
     .attr("font-size", "10px");
-    scatter4.append("text")
+    eduScatter.append("text")
     .text("Happiness Score")
     .attr("x", 5)
     .attr("y", 20)
     .attr("font-size", "10px");
-	scatter4.append("text")
+	eduScatter.append("text")
     .text("Happiness Score vs. Education Index")
     .attr("x", 140)
     .attr("y", 20);
 	
     data.forEach(function (d) {
 		if(d["Education index"]>0){
-			scatter4.append("circle")
+			eduScatter.append("circle")
 			.attr("cx", educationScale(d["Education index"]))
 			.attr("cy", happinessScale(d["Happiness Score"]))
 			.attr("r", 4.5)
@@ -430,7 +430,7 @@
 			.style("border", "solid 1px black");
 		}	
 		if(d["Country"] == "Somaliland Region"){
-			scatter4.append("circle")
+			eduScatter.append("circle")
 			.attr("cx", educationScale(d["Education index"]))
 			.attr("cy", happinessScale(d["Happiness Score"]))
 			.attr("r", 8)
@@ -441,49 +441,49 @@
 	var	yi = 285;
 
 	for(var i = 1; i< 5; i++){
-		scatter1.append("rect")
+		gdpScatter.append("rect")
 			.attr("x", 10)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter1.append("text")
+		gdpScatter.append("text")
 			.text(legend[i])
 			.attr("x", 25)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");
 			
-		scatter2.append("rect")
+		freedomScatter.append("rect")
 			.attr("x", 10)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter2.append("text")
+		freedomScatter.append("text")
 			.text(legend[i])
 			.attr("x", 25)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");
 
-		scatter3.append("rect")
+		lifeScatter.append("rect")
 			.attr("x", 10)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter3.append("text")
+		lifeScatter.append("text")
 			.text(legend[i])
 			.attr("x", 25)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");
 
-		scatter4.append("rect")
+		eduScatter.append("rect")
 			.attr("x", 10)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter4.append("text")
+		eduScatter.append("text")
 			.text(legend[i])
 			.attr("x", 25)
 			.attr("y", yi+7)
@@ -493,49 +493,49 @@
 	}	
 	var	yi = 285;	
 	for(var i = 5; i< 9; i++){
-		scatter1.append("rect")
+		gdpScatter.append("rect")
 			.attr("x", 175)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter1.append("text")
+		gdpScatter.append("text")
 			.text(legend[i])
 			.attr("x", 190)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");
 			
-		scatter2.append("rect")
+		freedomScatter.append("rect")
 			.attr("x", 175)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter2.append("text")
+		freedomScatter.append("text")
 			.text(legend[i])
 			.attr("x", 190)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");
 
-		scatter3.append("rect")
+		lifeScatter.append("rect")
 			.attr("x", 175)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter3.append("text")
+		lifeScatter.append("text")
 			.text(legend[i])
 			.attr("x", 190)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");
 
-		scatter4.append("rect")
+		eduScatter.append("rect")
 			.attr("x", 175)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter4.append("text")
+		eduScatter.append("text")
 			.text(legend[i])
 			.attr("x", 190)
 			.attr("y", yi+7)
@@ -544,49 +544,49 @@
 	}
 	var	yi = 285;	
 	for(var i = 9; i< 11; i++){
-		scatter1.append("rect")
+		gdpScatter.append("rect")
 			.attr("x", 325)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter1.append("text")
+		gdpScatter.append("text")
 			.text(legend[i])
 			.attr("x", 340)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");
 
-		scatter2.append("rect")
+		freedomScatter.append("rect")
 			.attr("x", 325)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter2.append("text")
+		freedomScatter.append("text")
 			.text(legend[i])
 			.attr("x", 340)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");	
 
-		scatter3.append("rect")
+		lifeScatter.append("rect")
 			.attr("x", 325)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter3.append("text")
+		lifeScatter.append("text")
 			.text(legend[i])
 			.attr("x", 340)
 			.attr("y", yi+7)
 			.attr("font-size", "10px");
 	
-		scatter4.append("rect")
+		eduScatter.append("rect")
 			.attr("x", 325)
 			.attr("y", yi)
 			.attr("width", 10)
 			.attr("height", 10)
 			.style("fill", colorScale(legend[i]))
-		scatter4.append("text")
+		eduScatter.append("text")
 			.text(legend[i])
 			.attr("x", 340)
 			.attr("y", yi+7)
@@ -596,9 +596,9 @@
 
  function showHappyMap(happy, scores) {
   
-        projection.fitExtent([[0,0], [map1.attr("width"), map1.attr("height")-10]], countries);
+        projection.fitExtent([[0,0], [happyMap.attr("width"), happyMap.attr("height")-10]], countries);
         pathGenerator = d3.geoPath().projection(projection);
-        var paths = map1.selectAll("path.country").data(countries.features);
+        var paths = happyMap.selectAll("path.country").data(countries.features);
         paths.enter().append("path")
         .attr("fill", function (country) {
          var colorid = find_happycolor(country.id, happy, scores);
@@ -636,10 +636,10 @@
         }
       function showGDPMap(data, gdp_map) {
         
-        projection.fitExtent([[0,0], [map2.attr("width"),map2.attr("height")-10]], countries);
+        projection.fitExtent([[0,0], [gdpMap.attr("width"),gdpMap.attr("height")-10]], countries);
         pathGenerator = d3.geoPath().projection(projection);
         
-        var paths = map2.selectAll("path.country").data(countries.features);
+        var paths = gdpMap.selectAll("path.country").data(countries.features);
         paths.enter().append("path")
         .attr("fill", function (country) {
           var colorid = find_gdpcolor(country.id, data, gdp_map);
@@ -679,9 +679,9 @@
          return colorid;
       }
   function showFreeMap(free, scores) {
-        projection.fitExtent([[0,0], [map3.attr("width"), map3.attr("height")-10]], countries);
+        projection.fitExtent([[0,0], [freedomMap.attr("width"), freedomMap.attr("height")-10]], countries);
         pathGenerator = d3.geoPath().projection(projection);
-        var paths = map3.selectAll("path.country").data(countries.features);
+        var paths = freedomMap.selectAll("path.country").data(countries.features);
         paths.enter().append("path")
         .attr("fill", function (country) {
          var colorid = find_freecolor(country.id, free, scores);
@@ -722,9 +722,9 @@
         }
     function showLifeMap(life, scores) {
   
-        projection.fitExtent([[0,0], [map4.attr("width"), map4.attr("height")-10]], countries);
+        projection.fitExtent([[0,0], [lifeMap.attr("width"), lifeMap.attr("height")-10]], countries);
         pathGenerator = d3.geoPath().projection(projection);
-        var paths = map4.selectAll("path.country").data(countries.features);
+        var paths = lifeMap.selectAll("path.country").data(countries.features);
         paths.enter().append("path")
         .attr("fill", function (country) {
          var colorid = find_lifecolor(country.id, life, scores);
@@ -766,9 +766,9 @@
   
     function showEduMap(edu, scores) {
   
-        projection.fitExtent([[0,0], [map5.attr("width"), map5.attr("height")-10]], countries);
+        projection.fitExtent([[0,0], [eduMap.attr("width"), eduMap.attr("height")-10]], countries);
         pathGenerator = d3.geoPath().projection(projection);
-        var paths = map5.selectAll("path.country").data(countries.features);
+        var paths = eduMap.selectAll("path.country").data(countries.features);
         paths.enter().append("path")
         .attr("fill", function (country) {
          var colorid = find_educolor(country.id, edu, scores);
@@ -833,37 +833,37 @@
         var lifetexts = ["< 50", "50 - 60", "60 - 65", "65 - 70", "70 - 80", "> 80"]
         var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 0.8"]; 
         bars.forEach(function(d) {
-              map1.append("rect")
+              happyMap.append("rect")
                  .attr("x", xhbarScale(d.x))
                  .attr("y", yhbarScale(d.y + 30))
                  .attr("width", xhbarScale(120))
                  .attr("height", yhbarScale(20))
                  .style("fill", happyColors[d.id]);
-              map2.append("rect")
+              gdpMap.append("rect")
                  .attr("x", xbarScale(d.x))
                  .attr("y", ybarScale(d.y))
                  .attr("width", xbarScale(120))
                  .attr("height", ybarScale(20))
                  .style("fill", gdpColors[d.id]);
-               map3.append("rect")
+               freedomMap.append("rect")
                  .attr("x", xbarScale(d.x))
                  .attr("y", ybarScale(d.y))
                  .attr("width", xbarScale(120))
                  .attr("height", ybarScale(20))
                  .style("fill", freeColors[d.id]);
-               map4.append("rect")
+               lifeMap.append("rect")
                  .attr("x", xbarScale(d.x))
                  .attr("y", ybarScale(d.y))
                  .attr("width", xbarScale(120))
                  .attr("height", ybarScale(20))
                  .style("fill", lifeColors[d.id]);
-               map5.append("rect")
+               eduMap.append("rect")
                  .attr("x", xbarScale(d.x))
                  .attr("y", ybarScale(d.y))
                  .attr("width", xbarScale(120))
                  .attr("height", ybarScale(20))
                  .style("fill", eduColors[d.id]);
-              map1.append("text")
+              happyMap.append("text")
                 .style("font-size", "10pt")
                 .style("font-family","Tahoma")
                 .style("fill", happyColors[5])
@@ -871,7 +871,7 @@
                 .attr("y", yhbarScale(d.y + 70))
                 .style("text-anchor", "middle")
                 .text(happytexts[d.id]);
-              map2.append("text")
+              gdpMap.append("text")
                 .style("font-size", "7pt")
                 .style("font-family","Tahoma")
                 .style("fill", gdpColors[5])
@@ -879,7 +879,7 @@
                 .attr("y", ybarScale(d.y + 40))
                 .style("text-anchor", "middle")
                 .text(gdptexts[d.id]);
-              map3.append("text")
+              freedomMap.append("text")
                 .style("font-size", "7pt")
                 .style("font-family","Tahoma")
                 .style("fill", freeColors[5])
@@ -887,7 +887,7 @@
                 .attr("y", ybarScale(d.y + 40))
                 .style("text-anchor", "middle")
                 .text(freetexts[d.id]);
-              map4.append("text")
+              lifeMap.append("text")
                 .style("font-size", "7pt")
                 .style("font-family","Tahoma")
                 .style("fill", lifeColors[5])
@@ -895,7 +895,7 @@
                 .attr("y", ybarScale(d.y + 40))
                 .style("text-anchor", "middle")
                 .text(lifetexts[d.id]);
-              map5.append("text")
+              eduMap.append("text")
                 .style("font-size", "7pt")
                 .style("font-family","Tahoma")
                 .style("fill", eduColors[5])
@@ -905,15 +905,15 @@
                 .text(edutexts[d.id]);
             });
 
-              map1.append("text")
+              happyMap.append("text")
                     .style("font-size", "10pt")
                     .style("font-family","Tahoma")
                     .style("fill", happyColors[5])
                     .attr("x", xhbarScale(65))
                     .attr("y", yhbarScale(575))
                     .style("text-anchor", "middle")
-                    .text("Happiness Scores");
-              map2.append("text")
+                    .text("Happiness Score");
+              gdpMap.append("text")
                     .style("font-size", "7pt")
                     .style("font-family","Tahoma")
                     .style("fill", gdpColors[5])
@@ -921,7 +921,7 @@
                     .attr("y", ybarScale(550))
                     .style("text-anchor", "middle")
                     .text("GDP per capita");
-              map2.append("text")
+              gdpMap.append("text")
                     .style("font-size", "7pt")
                     .style("font-family","Tahoma")
                     .style("fill", gdpColors[5])
@@ -929,15 +929,15 @@
                     .attr("y", ybarScale(565))
                     .style("text-anchor", "middle")
                     .text("(thousands $)");
-              map3.append("text")
+              freedomMap.append("text")
                     .style("font-size", "7pt")
                     .style("font-family","Tahoma")
                     .style("fill", freeColors[5])
                     .attr("x", xbarScale(80))
                     .attr("y", ybarScale(550))
                     .style("text-anchor", "middle")
-                    .text("Freedom Scores");
-              map4.append("text")
+                    .text("Freedom Score");
+              lifeMap.append("text")
                     .style("font-size", "7pt")
                     .style("font-family","Tahoma")
                     .style("fill", lifeColors[5])
@@ -945,7 +945,7 @@
                     .attr("y", ybarScale(550))
                     .style("text-anchor", "middle")
                     .text("Life Expectancy");
-              map5.append("text")
+              eduMap.append("text")
                     .style("font-size", "7pt")
                     .style("font-family","Tahoma")
                     .style("fill", eduColors[5])
