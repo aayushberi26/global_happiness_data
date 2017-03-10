@@ -1,0 +1,26 @@
+body {
+        font-family: 'Fira Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background-color: GhostWhite;
+    }
+        
+h1 {
+    font-size: 50px;
+    text-align: center;
+}
+        
+h2 {
+    font-size: 18px;
+    text-align: center;
+}
+        
+a {
+    text-decoration: none;
+}
+
+.container-fluid {
+    margin-bottom: 60px;
+}
+
+.row {
+    margin-bottom: 10px;
+}

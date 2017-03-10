@@ -1,973 +1,1008 @@
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <!--
-            Aayush Beri (ab2466)
-            Michael Ofori (mo366)
-            Yingda Du (yd275)
-        -->
-        <meta charset="utf-8">
-        <title>index</title>
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Lemonada" rel="stylesheet">
-        <script src="https://d3js.org/d3.v4.min.js"></script>
-        <script src="http://d3js.org/topojson.v2.min.js"></script>
-        <style>
-           body {
-                font-family: 'Fira Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                background-color: GhostWhite;
-                }
-            h1 {
-                font-size: 50px;
-            }
-            h2 {
-                font-size: 18px;
-                text-align: center;
-            }
-            a {
-                text-decoration: none;
-            }
-        </style>
-    </head>
-    <body>
-    <h1 style="text-align: center"> Happy? You must have everything going for you...</h1>
 
-    <div class = "container-fluid" style="margin-bottom: 60px;">
-        <div class = "row">
-            <div class = "col-lg-2">
+<head>
+    <meta charset="utf-8">
+    <title>Worldwide Happiness Data</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Lemonada" rel="stylesheet">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/topojson.v2.min.js"></script>
+</head>
+
+<body>
+
+    <h1>
+        Happy? You must have everything going for you...
+    </h1>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2">
                 <br>
             </div>
-        <div class = "col-lg-6"></div>
+            <div class="col-lg-6">
+            </div>
             <div id="happyMap">
             </div>
-            <div class = "row">
-                <div class = "col-lg-1"></div>
-                <div class = "col-lg-10">
-                    <h2> Above is a map of worldwide happiness scores. Happiness scores are calculated based on data from the Gallup World Poll. Respondents from a nationally representative sample from each country rated their current lives on a scale from 0 to 10, where 10 was the best possible life and 0 was the worst possible life. Data compiled on Kaggle <a href="https://www.kaggle.com/unsdsn/world-happiness">here</a>.
+            <div class="row">
+                <div class="col-lg-1">
+                </div>
+                <div class="col-lg-10">
+                    <h2>
+                        Above is a map of worldwide happiness scores. Happiness scores are calculated based on data from the Gallup World Poll. Respondents from a nationally representative sample from each country rated their current lives on a scale from 0 to 10, where 10 was the best possible life and 0 was the worst possible life. Data compiled on Kaggle <a href="https://www.kaggle.com/unsdsn/world-happiness">here</a>.
                     </h2>
                 </div>
             </div>
         </div>
     </div>
-<div class = "container-fluid" style="margin-bottom: 60px;">
-    <div class = "row" style="margin-bottom: 10px">
-        <div class = "col-lg-1">
-            <br>
-        </div>
-        <div class = "col-lg-5">
-            <div id="gdpMap">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-1">
+                <br>
+            </div>
+            <div class="col-lg-5">
+                <div id="gdpMap">
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div id="gdpScatter">
+                </div>
             </div>
         </div>
-        <div class = "col-lg-5">
-            <div id ="gdpScatter">
-            </div>
-        </div>
-    </div>
 
-    <div class = "row">
-        <div class = "col-lg-1"></div>
-        <div class = "col-lg-10">
-            <h2> Above and left is a map of global GDP per capita, compiled by the World Bank. On the right is a plot mapping happiness score and GDP per capita. Notable outliers indicated on the plot include:
-			Hong Kong (GDP per capita: $58,095, Happiness Score: 5.458/10), Qatar (GDP per capita: $129,727, Happiness Score: 6.375/10), Singapore (GDP per capita: $87,082, Happiness Score: 6.739/10), and Luxembourg (GDP
-			per capita: $101,936, Happiness Score: 6.871/10). The GDP data is from <a href="http://data.worldbank.org/indicator/NY.GDP.PCAP.CD">here</a>.
-            </h2>
-        </div>
-    </div>
-
-
-    </div>
-
-
-
-<div class = "container-fluid" style="margin-bottom: 60px;">
-    <div class = "row" style="margin-bottom: 10px">
-        <div class = "col-lg-1">
-            <br>
-        </div>
-        <div class = "col-lg-5">
-            <div id="freedomMap">
-            </div>
-        </div>
-        <div class = "col-lg-5">
-            <div id ="freedomScatter">
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <h2>
+                    Above and left is a map of global GDP per capita, compiled by the World Bank. On the right is a plot mapping happiness score and GDP per capita. Notable outliers indicated on the plot include: Hong Kong (GDP per capita: $58,095, Happiness Score: 5.458/10), Qatar (GDP per capita: $129,727, Happiness Score: 6.375/10), Singapore (GDP per capita: $87,082, Happiness Score: 6.739/10), and Luxembourg (GDP per capita: $101,936, Happiness Score: 6.871/10). The GDP data is from <a href="http://data.worldbank.org/indicator/NY.GDP.PCAP.CD">here</a>.
+                </h2>
             </div>
         </div>
     </div>
-    <div class = "row">
-        <div class = "col-lg-1"></div>
-        <div class = "col-lg-10">
-            <h2> Above and left is a map of aggregate freedom scores. On the right is a plot mapping happiness score and freedom score. Freedom scores, calculated by Freedomhouse, take into account political rights, civil liberties, 
-			and a quantitative "freedom scale" with 100 being most free and 0 being least free to calculate an aggregate freedom score. The above plot does not show any significant outliers. The data is from <a href="https://freedomhouse.org/report/freedom-world-2016/table-scores">here</a>.
-            </h2>
-        </div>
-    </div>
-</div>
-
-<div class = "container-fluid" style="margin-bottom: 60px;">
-    <div class = "row" style="margin-bottom: 10px">
-        <div class = "col-lg-1">
-            <br>
-        </div>
-        <div class = "col-lg-5">
-            <div id="lifeMap">
-            </div>
-        </div>
-        <div class = "col-lg-5">
-            <div id ="lifeScatter">
-            </div>
-        </div>
-    </div>
-        <div class = "row">
-        <div class = "col-lg-1"></div>
-        <div class = "col-lg-10">
-            <h2> Above and left is a map of life expectancy. Life expectancy was compiled by InfoPlease. On the right is a plot mapping happiness score and life expectancy. Notable outliers include Somalia (Average Life Expectancy: 51.96 years, Happiness Score: 
-			5.44/10) and Syria (Average Life Expectancy: 74.69 years, Happiness Score: 3.069/10). The data is from <a href="http://www.infoplease.com/world/statistics/life-expectancy-country.html">here</a>.
-            </h2>
-        </div>
-    </div>
-</div>
 
 
-<div class = "container-fluid" style="margin-bottom: 60px;">
-    <div class = "row" style="margin-bottom: 10px">
-        <div class = "col-lg-1">
-            <br>
-        </div>
-        <div class = "col-lg-5">
-            <div id="eduMap">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-1">
+                <br>
+            </div>
+            <div class="col-lg-5">
+                <div id="freedomMap">
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div id="freedomScatter">
+                </div>
             </div>
         </div>
-        <div class = "col-lg-5">
-            <div id ="eduScatter">
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <h2> Above and left is a map of aggregate freedom scores. On the right is a plot mapping happiness score and freedom score. Freedom scores, calculated by Freedomhouse, take into account political rights, civil liberties, and a quantitative "freedom scale" with 100 being most free and 0 being least free to calculate an aggregate freedom score. The above plot does not show any significant outliers. The data is from <a href="https://freedomhouse.org/report/freedom-world-2016/table-scores">here</a>.
+                </h2>
             </div>
         </div>
     </div>
-    <div class = "row" style="margin-bottom: 10px">
-        <div class = "col-lg-1"></div>
-        <div class = "col-lg-10">
-            <h2> Above and left is a map of education indexes. On the right is a plot mapping happiness score and education index. The education index, calculated by the United Nations Development Programme, factors in mean years of schooling and expected years of schooling. 
-			The main notable outlier is the Somaliland Region (Education Index: 0.15, Happiness Score: 5.057). The data is from <a href="http://hdr.undp.org/en/content/education-index">here</a>.
-            </h2>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-1">
+                <br>
+            </div>
+            <div class="col-lg-5">
+                <div id="lifeMap">
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div id="lifeScatter">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <h2> Above and left is a map of life expectancy. Life expectancy was compiled by InfoPlease. On the right is a plot mapping happiness score and life expectancy. Notable outliers include Somalia (Average Life Expectancy: 51.96 years, Happiness Score: 5.44/10) and Syria (Average Life Expectancy: 74.69 years, Happiness Score: 3.069/10). The data is from <a href="http://www.infoplease.com/world/statistics/life-expectancy-country.html">here</a>.
+                </h2>
+            </div>
         </div>
     </div>
-</div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-1">
+                <br>
+            </div>
+            <div class="col-lg-5">
+                <div id="eduMap">
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div id="eduScatter">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <h2> Above and left is a map of education indexes. On the right is a plot mapping happiness score and education index. The education index, calculated by the United Nations Development Programme, factors in mean years of schooling and expected years of schooling. The main notable outlier is the Somaliland Region (Education Index: 0.15, Happiness Score: 5.057). The data is from <a href="http://hdr.undp.org/en/content/education-index">here</a>.
+                </h2>
+            </div>
+        </div>
+    </div>
 
 
 
     <script>
-    // Partially inspiring scatter plot code: http://bl.ocks.org/weiglemc/6185069
-    // Partially inspiring map code: http://bl.ocks.org/rveciana/f46df2272b289a9ce4e7
-    // gdp data from http://data.worldbank.org/data-catalog/GDP-ranking-table
-    // happiness data from https://www.kaggle.com/unsdsn/world-happiness
-    // freedom data from https://freedomhouse.org/report/freedom-world-2016/table-scores
-    // life expectancy data from http://www.infoplease.com/world/statistics/life-expectancy-country.html
-    // education data from http://hdr.undp.org/en/content/education-index
-    var width = 500;
-    var height = 350;
-    var happyWidth = 896;
-    var happyHeight = 560;
-    var happyMap = d3.select("#happyMap").append("svg")
-              .attr("width", happyWidth)
-              .attr("height", happyHeight);
-    var gdpMap = d3.select("#gdpMap").append("svg")
-              .attr("width", width)
-              .attr("height", height);
-    
-    var freedomMap = d3.select("#freedomMap").append("svg")
-              .attr("width", width)
-              .attr("height", height);
-    var lifeMap = d3.select("#lifeMap").append("svg")
-              .attr("width", width)
-              .attr("height", height);
-    var eduMap = d3.select("#eduMap").append("svg")
-              .attr("width", width)
-              .attr("height", height);
-    var gdpScatter = d3.select("#gdpScatter")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .style("border", "solid 2px black");
+        // Partially inspiring scatter plot code: http://bl.ocks.org/weiglemc/6185069
+        // Partially inspiring map code: http://bl.ocks.org/rveciana/f46df2272b289a9ce4e7
+        // gdp data from http://data.worldbank.org/data-catalog/GDP-ranking-table
+        // happiness data from https://www.kaggle.com/unsdsn/world-happiness
+        // freedom data from https://freedomhouse.org/report/freedom-world-2016/table-scores
+        // life expectancy data from http://www.infoplease.com/world/statistics/life-expectancy-country.html
+        // education data from http://hdr.undp.org/en/content/education-index
+        var width = 500;
+        var height = 350;
+        var happyWidth = 896;
+        var happyHeight = 560;
+        var happyMap = d3.select("#happyMap").append("svg")
+            .attr("width", happyWidth)
+            .attr("height", happyHeight);
+        var gdpMap = d3.select("#gdpMap").append("svg")
+            .attr("width", width)
+            .attr("height", height);
 
-    var freedomScatter = d3.select("#freedomScatter")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .style("border", "solid 2px black");
+        var freedomMap = d3.select("#freedomMap").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        var lifeMap = d3.select("#lifeMap").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        var eduMap = d3.select("#eduMap").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        var gdpScatter = d3.select("#gdpScatter")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .style("border", "solid 2px black");
 
-    var lifeScatter = d3.select("#lifeScatter")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .style("border", "solid 2px black");
+        var freedomScatter = d3.select("#freedomScatter")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .style("border", "solid 2px black");
 
-    var eduScatter = d3.select("#eduScatter")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .style("border", "solid 2px black");
+        var lifeScatter = d3.select("#lifeScatter")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .style("border", "solid 2px black");
 
-		
-    var projection = d3.geoEquirectangular();
-    var pathGenerator = d3.geoPath().projection(projection);
-    // the darker the color is, the higher happiness rank the coutry is
-    var happyColors = ['#feedde','#fdd0a2','#fdae6b','#fd8d3c','#e6550d','#a63603'];
-    var gdpColors = ['#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
-    var freeColors = ['#c6dbef','#9ecae1','#6baed6','#4292c6','#08519c','#08306b'];
-    var lifeColors = ['#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#3f007d'];
-    var eduColors = ['#fff5f0','#fcbba1','#fb6a4a','#ef3b2c','#cb181d','#67000d'];
-    var rawData;
-    var countries;
-    d3.csv("data.csv", function(error, data) {
-        if(error) { console.log(error); }
-        var scores = data.map(function (d) { return Number(d["Happiness Score"]); });
-        var gdp_map = data.map(function (d) { return Number(d["GDP per capita ($)"]); });
-        var freedom = data.map(function (d) { return Number(d["Freedom scores"]); });
-        var life = data.map(function (d) { return Number(d["Life Expendancy"]); });
-        var edu_index = data.map(function (d) { return Number(d["Education index"]); });
-        
-    d3.json("world-50m.json", function(error, world) {
-          if (error) throw error;
-    
-          rawData = world;
-          countries = topojson.feature(rawData, rawData.objects.countries);
-          showHappyMap(data, scores);
-          showGDPMap(data, gdp_map);
-          showFreeMap(data, freedom);
-          showLifeMap(data, life);
-          showEduMap(data, edu_index);
-          showMapScales();
-        data.forEach(function(d) {
-        d["Happiness Score"] = +d["Happiness Score"];
-        d["GDP per capita ($)"] = +d["GDP per capita ($)"];
-		d["Life Expendancy"] = +d["Life Expendancy"];
-		d["Education index"] = +d["Education index"];
-
-		});
-    var gdpExtent = d3.extent(data, function(d) {
-        return d["GDP per capita ($)"];
-    });
-    var freedomExtent = d3.extent(data, function(d) {
-        return d["Freedom scores"];
-    });
-    var lifeExtent = d3.extent(data, function(d) {
-        return d["Life Expendancy"];
-    });
-    var educationExtent = d3.extent(data, function(d) {
-        return d["Education index"];
-    });
-
-    var happinessExtent = d3.extent(data, function(d) {
-        return d["Happiness Score"];
-    });
-	
-	//Adjusting extent for axes
-	gdpExtent[0] = (gdpExtent[0]-1)/1000;
-	gdpExtent[1] = (gdpExtent[1]+1)/1000;
-		
-	happinessExtent[0] = happinessExtent[0]-1;
-	happinessExtent[1] = happinessExtent[1]+1;	
-    // gdp
-    var gdpScale = d3.scaleLinear().domain(gdpExtent).range([30, 425]);
-    var happinessScale = d3.scaleLinear().domain(happinessExtent).range([270, 30]);
-    var gdpAxis = d3.axisBottom(gdpScale);
-    var happinessAxis = d3.axisLeft(happinessScale);
-    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    gdpScatter.append("g").attr("transform", "translate(0, 260)").call(gdpAxis);
-    gdpScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    gdpScatter.append("text")
-    .text("GDP per capita ($1,000)")
-    .attr("x", 320)
-    .attr("y", 255)
-    .attr("font-size", "10px");
-    gdpScatter.append("text")
-    .text("Happiness Score")
-    .attr("x", 5)
-    .attr("y", 20)
-    .attr("font-size", "10px");
-	gdpScatter.append("text")
-    .text("Happiness Score vs. GDP per capita")
-    .attr("x", 140)
-    .attr("y", 20);
-	
-	var yi = 20;
-	var legend = [];
-    data.forEach(function (d) {
-		if(d["GDP per capita ($)"]>0){
-			gdpScatter.append("circle")
-			.attr("cx", gdpScale(d["GDP per capita ($)"]/1000))
-			.attr("cy", happinessScale(d["Happiness Score"]))
-			.attr("r", 4.5)
-			.style("stroke", "black")
-			.style("fill", colorScale(d["Region"]))
-			.style("border", "solid 1px black");
-		}
-		if(d["Country"] == "Hong Kong" || d["Country"] == "Qatar" || d["Country"] == "Singapore" || d["Country"] == "Luxembourg" ){
-			gdpScatter.append("circle")
-			.attr("cx", gdpScale(d["GDP per capita ($)"]/1000))
-			.attr("cy", happinessScale(d["Happiness Score"]))
-			.attr("r", 8)
-			.style("stroke", "black")
-			.attr("fill", "none");
-			}
-		var has = 0;
-		for(var i = 1; i< legend.length; i++){
-			if(legend[i] == d["Region"]){
-				has = has+1;
-			}
-		}	
-		if(has==0){
-			legend.push(d["Region"]);
-		}	
-			
-    })
-
-    // freedom
-    var freedomScale = d3.scaleLinear().domain([0,100]).range([30, 425]);
-    var freedomAxis = d3.axisBottom(freedomScale);
-    var happinessAxis = d3.axisLeft(happinessScale);
-    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    freedomScatter.append("g").attr("transform", "translate(0, 260)").call(freedomAxis);
-    freedomScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    freedomScatter.append("text")
-    .text("Freedom Score")
-    .attr("x", 360)
-    .attr("y", 255)
-    .attr("font-size", "10px");
-    freedomScatter.append("text")
-    .text("Happiness Score")
-    .attr("x", 5)
-    .attr("y", 20)
-    .attr("font-size", "10px");
-	freedomScatter.append("text")
-    .text("Happiness Score vs. Freedom Score")
-    .attr("x", 140)
-    .attr("y", 20);
-
-    data.forEach(function (d) {
-		if(d["Freedom scores"]>0){
-			freedomScatter.append("circle")
-			.attr("cx", freedomScale(d["Freedom scores"]))
-			.attr("cy", happinessScale(d["Happiness Score"]))
-			.attr("r", 4.5)
-			.style("stroke", "black")
-			.style("fill", colorScale(d["Region"]))
-			.style("border", "solid 1px black");
-		}
-	
-
-		
-    })
-	
-
-    // life extent
-    var lifeScale = d3.scaleLinear().domain([45,90]).range([30, 425]);
-    var lifeAxis = d3.axisBottom(lifeScale);
-    var happinessAxis = d3.axisLeft(happinessScale);
-    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    lifeScatter.append("g").attr("transform", "translate(0, 260)").call(lifeAxis);
-    lifeScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    lifeScatter.append("text")
-    .text("Life Expectancy")
-    .attr("x", 360)
-    .attr("y", 255)
-    .attr("font-size", "10px");
-    lifeScatter.append("text")
-    .text("Happiness Score")
-    .attr("x", 5)
-    .attr("y", 20)
-    .attr("font-size", "10px");
-	lifeScatter.append("text")
-    .text("Happiness Score vs. Life Expectancy")
-    .attr("x", 140)
-    .attr("y", 20);
-	
-    data.forEach(function (d) {
-		if(d["Life Expendancy"]>0){
-			lifeScatter.append("circle")
-			.attr("cx", lifeScale(d["Life Expendancy"]))
-			.attr("cy", happinessScale(d["Happiness Score"]))
-			.attr("r", 4.5)
-			.style("stroke", "black")
-			.style("fill", colorScale(d["Region"]))
-			.style("border", "solid 1px black");
-		}
-		if(d["Country"] == "Somalia" || d["Country"] == "Syria"){
-			lifeScatter.append("circle")
-			.attr("cx", lifeScale(d["Life Expendancy"]))
-			.attr("cy", happinessScale(d["Happiness Score"]))
-			.attr("r", 8)
-			.style("stroke", "black")
-			.attr("fill", "none");
-			}				
-    })
+        var eduScatter = d3.select("#eduScatter")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .style("border", "solid 2px black");
 
 
-    // education
-    var educationScale = d3.scaleLinear().domain(educationExtent).range([30, 425]);
-    var educationAxis = d3.axisBottom(educationScale);
-    var happinessAxis = d3.axisLeft(happinessScale);
-    var colorScale = d3.scaleOrdinal(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']);
-    eduScatter.append("g").attr("transform", "translate(0, 260)").call(educationAxis);
-    eduScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
-    eduScatter.append("text")
-    .text("Education Index")
-    .attr("x", 360)
-    .attr("y", 255)
-    .attr("font-size", "10px");
-    eduScatter.append("text")
-    .text("Happiness Score")
-    .attr("x", 5)
-    .attr("y", 20)
-    .attr("font-size", "10px");
-	eduScatter.append("text")
-    .text("Happiness Score vs. Education Index")
-    .attr("x", 140)
-    .attr("y", 20);
-	
-    data.forEach(function (d) {
-		if(d["Education index"]>0){
-			eduScatter.append("circle")
-			.attr("cx", educationScale(d["Education index"]))
-			.attr("cy", happinessScale(d["Happiness Score"]))
-			.attr("r", 4.5)
-			.style("stroke", "black")
-			.style("fill", colorScale(d["Region"]))
-			.style("border", "solid 1px black");
-		}	
-		if(d["Country"] == "Somaliland Region"){
-			eduScatter.append("circle")
-			.attr("cx", educationScale(d["Education index"]))
-			.attr("cy", happinessScale(d["Happiness Score"]))
-			.attr("r", 8)
-			.style("stroke", "black")
-			.attr("fill", "none");
-			}			
-    })
-	var	yi = 285;
-
-	for(var i = 1; i< 5; i++){
-		gdpScatter.append("rect")
-			.attr("x", 10)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		gdpScatter.append("text")
-			.text(legend[i])
-			.attr("x", 25)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-			
-		freedomScatter.append("rect")
-			.attr("x", 10)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		freedomScatter.append("text")
-			.text(legend[i])
-			.attr("x", 25)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-
-		lifeScatter.append("rect")
-			.attr("x", 10)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		lifeScatter.append("text")
-			.text(legend[i])
-			.attr("x", 25)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-
-		eduScatter.append("rect")
-			.attr("x", 10)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		eduScatter.append("text")
-			.text(legend[i])
-			.attr("x", 25)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");			
-		yi += 15;
-
-	}	
-	var	yi = 285;	
-	for(var i = 5; i< 9; i++){
-		gdpScatter.append("rect")
-			.attr("x", 175)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		gdpScatter.append("text")
-			.text(legend[i])
-			.attr("x", 190)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-			
-		freedomScatter.append("rect")
-			.attr("x", 175)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		freedomScatter.append("text")
-			.text(legend[i])
-			.attr("x", 190)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-
-		lifeScatter.append("rect")
-			.attr("x", 175)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		lifeScatter.append("text")
-			.text(legend[i])
-			.attr("x", 190)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-
-		eduScatter.append("rect")
-			.attr("x", 175)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		eduScatter.append("text")
-			.text(legend[i])
-			.attr("x", 190)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");			
-		yi += 15;		
-	}
-	var	yi = 285;	
-	for(var i = 9; i< 11; i++){
-		gdpScatter.append("rect")
-			.attr("x", 325)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		gdpScatter.append("text")
-			.text(legend[i])
-			.attr("x", 340)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-
-		freedomScatter.append("rect")
-			.attr("x", 325)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		freedomScatter.append("text")
-			.text(legend[i])
-			.attr("x", 340)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");	
-
-		lifeScatter.append("rect")
-			.attr("x", 325)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		lifeScatter.append("text")
-			.text(legend[i])
-			.attr("x", 340)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-	
-		eduScatter.append("rect")
-			.attr("x", 325)
-			.attr("y", yi)
-			.attr("width", 10)
-			.attr("height", 10)
-			.style("fill", colorScale(legend[i]))
-		eduScatter.append("text")
-			.text(legend[i])
-			.attr("x", 340)
-			.attr("y", yi+7)
-			.attr("font-size", "10px");
-		yi += 15;			
-	}	
-
- function showHappyMap(happy, scores) {
-  
-        projection.fitExtent([[0,0], [happyMap.attr("width"), happyMap.attr("height")-10]], countries);
-        pathGenerator = d3.geoPath().projection(projection);
-        var paths = happyMap.selectAll("path.country").data(countries.features);
-        paths.enter().append("path")
-        .attr("fill", function (country) {
-         var colorid = find_happycolor(country.id, happy, scores);
-          return happyColors[colorid];
-        })
-        .merge(paths) 
-        .attr("d", function (country) {
-          return pathGenerator(country);
-        });
-    }
-    function find_happycolor(id, happy, scores) {
-        var colorid = 0;
-        var happy_rank = 0;
-        for (var i = 0; i < happy.length; i++) {
-                if (id == happy[i].id) {
-                     happy_rank = scores[i];
-                }
-        }
-        if (happy_rank >= 7) {
-           colorid = 5;
-        }
-        if (happy_rank >= 6 && happy_rank < 7) {
-           colorid = 4;
-        }
-        if (happy_rank >= 5 && happy_rank < 6) {
-           colorid = 3;
-        }
-        if (happy_rank >= 4 && happy_rank < 5) {
-           colorid = 2;
-        }
-        if (happy_rank >= 3 && happy_rank < 4) {
-           colorid = 1;
-        }
-        return colorid;
-        }
-      function showGDPMap(data, gdp_map) {
-        
-        projection.fitExtent([[0,0], [gdpMap.attr("width"),gdpMap.attr("height")-10]], countries);
-        pathGenerator = d3.geoPath().projection(projection);
-        
-        var paths = gdpMap.selectAll("path.country").data(countries.features);
-        paths.enter().append("path")
-        .attr("fill", function (country) {
-          var colorid = find_gdpcolor(country.id, data, gdp_map);
-          return gdpColors[colorid];
-        })
-        .merge(paths) 
-        .attr("d", function (country) {
-          return pathGenerator(country);
-        });
-      }
-      function find_gdpcolor(id, data, gdp_map) {
-         var colorid = 0;
-         var gdp = 0;
-         for (var i = 0; i < data.length; i++) {
-              if (id == data[i].id) {
-                    gdp = gdp_map[i];
-              }
-         }  
-           if (gdp <= 5000) {
-              colorid = 0;
-           }
-           if (gdp <= 20000 && gdp > 5000) {
-             colorid = 1;
-           }
-           if (gdp <= 35000 && gdp > 20000) {
-             colorid = 2;
-           }
-           if (gdp <= 50000 && gdp > 35000) {
-             colorid = 3;
-           }
-           if (gdp <= 65000 && gdp > 50000) {
-             colorid = 4;
-           }
-           if (gdp > 65000) {
-             colorid = 5;
-           }
-         return colorid;
-      }
-  function showFreeMap(free, scores) {
-        projection.fitExtent([[0,0], [freedomMap.attr("width"), freedomMap.attr("height")-10]], countries);
-        pathGenerator = d3.geoPath().projection(projection);
-        var paths = freedomMap.selectAll("path.country").data(countries.features);
-        paths.enter().append("path")
-        .attr("fill", function (country) {
-         var colorid = find_freecolor(country.id, free, scores);
-          return freeColors[colorid];
-        })
-        .merge(paths) 
-        .attr("d", function (country) {
-          return pathGenerator(country);
-        });
-    }
-    function find_freecolor(id, free, scores) {
-        var colorid = 0;
-        var free_score = 0;
-        for (var i = 0; i < free.length; i++) {
-                if (id == free[i].id) {
-                     free_score = scores[i];
-                }               
-        }  
-        if (free_score > 90) {
-           colorid = 5;
-        }
-        if (free_score > 70 && free_score <= 90) {
-           colorid = 4;
-        }
-        if (free_score > 50 && free_score <= 70) {
-           colorid = 3;
-        }
-        if (free_score > 30 && free_score <= 50 ) {
-           colorid = 2;
-        }
-        if (free_score > 10 && free_score <= 30) {
-           colorid = 1;
-        }
-        if (free_score <= 10) {
-           colorid = 0;
-        }
-        return colorid;
-        }
-    function showLifeMap(life, scores) {
-  
-        projection.fitExtent([[0,0], [lifeMap.attr("width"), lifeMap.attr("height")-10]], countries);
-        pathGenerator = d3.geoPath().projection(projection);
-        var paths = lifeMap.selectAll("path.country").data(countries.features);
-        paths.enter().append("path")
-        .attr("fill", function (country) {
-         var colorid = find_lifecolor(country.id, life, scores);
-          return lifeColors[colorid];
-        })
-        .merge(paths) 
-        .attr("d", function (country) {
-          return pathGenerator(country);
-        });
-    }
-    function find_lifecolor(id, life, scores) {
-        var colorid = 0;
-        var life_exp = 0;
-        for (var i = 0; i < life.length; i++) {
-                if (id == life[i].id) {
-                     life_exp = scores[i];
-                }
-        }
-        if (life_exp > 80) {
-           colorid = 5;
-        }
-        if (life_exp > 70 && life_exp <= 80) {
-           colorid = 4;
-        }
-        if (life_exp > 65 && life_exp <= 70) {
-           colorid = 3;
-        }
-        if (life_exp > 60 && life_exp <= 65) {
-           colorid = 2;
-        }
-        if (life_exp > 50 && life_exp <= 60) {
-           colorid = 1;
-        }
-        if (life_exp <= 50) {
-           colorid = 0;
-        }
-        return colorid;
-        }
-  
-    function showEduMap(edu, scores) {
-  
-        projection.fitExtent([[0,0], [eduMap.attr("width"), eduMap.attr("height")-10]], countries);
-        pathGenerator = d3.geoPath().projection(projection);
-        var paths = eduMap.selectAll("path.country").data(countries.features);
-        paths.enter().append("path")
-        .attr("fill", function (country) {
-         var colorid = find_educolor(country.id, edu, scores);
-          return eduColors[colorid];
-        })
-        .merge(paths) 
-        .attr("d", function (country) {
-          return pathGenerator(country);
-        });
-    }
-    function find_educolor(id, edu, scores) {
-        var colorid = 0;
-        var edu_index = 0;
-        for (var i = 0; i < edu.length; i++) {
-                if (id == edu[i].id) {
-                     edu_index = scores[i];
-                }
-        }
-        if (edu_index >= 0.8) {
-           colorid = 5;
-        }
-        if (edu_index >= 0.7 && edu_index < 0.8) {
-           colorid = 4;
-        }
-        if (edu_index >= 0.6 && edu_index < 0.7) {
-           colorid = 3;
-        }
-        if (edu_index >= 0.5 && edu_index < 0.6) {
-           colorid = 2;
-        }
-        if (edu_index >= 0.4 && edu_index < 0.5) {
-           colorid = 1;
-        }
-        if (edu_index < 0.4) {
-           colorid = 0;
-        }
-        return colorid;
-        }
-
-    function showMapScales() { 
-        var xbarScale = d3.scaleLinear()
-          .domain([0, 960])
-          .range([0, width]);
-        var ybarScale = d3.scaleLinear()
-          .domain([0, 600])
-          .range([0, height]);
-        var xhbarScale = d3.scaleLinear()
-          .domain([0, 960])
-          .range([0, happyWidth]);
-        var yhbarScale = d3.scaleLinear()
-          .domain([0, 600])
-          .range([0, happyHeight]);
-        var bars = [ {"x": 160, "y": 530, "id": 0}, 
-                    {"x": 280, "y": 530, "id": 1}, 
-                    {"x": 400, "y": 530, "id": 2},
-                    {"x": 520, "y": 530, "id": 3}, 
-                    {"x": 640, "y": 530, "id": 4}, 
-                    {"x": 760, "y": 530, "id": 5}];
-        var happytexts = ["0 - 3", "3 - 4", "4 - 5", "5 - 6", "6 - 7", "7 - 10" ];
-        var gdptexts = ["< 5", "5 - 20", "20 - 35", "35 - 50", "50 - 65", "> 65"];
-        var freetexts = ["< 10", "10 - 30", "30 - 50", "50 - 70","70 - 90", " > 90"];
-        var lifetexts = ["< 50", "50 - 60", "60 - 65", "65 - 70", "70 - 80", "> 80"]
-        var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 0.8"]; 
-        bars.forEach(function(d) {
-              happyMap.append("rect")
-                 .attr("x", xhbarScale(d.x))
-                 .attr("y", yhbarScale(d.y + 30))
-                 .attr("width", xhbarScale(120))
-                 .attr("height", yhbarScale(20))
-                 .style("fill", happyColors[d.id]);
-              gdpMap.append("rect")
-                 .attr("x", xbarScale(d.x))
-                 .attr("y", ybarScale(d.y))
-                 .attr("width", xbarScale(120))
-                 .attr("height", ybarScale(20))
-                 .style("fill", gdpColors[d.id]);
-               freedomMap.append("rect")
-                 .attr("x", xbarScale(d.x))
-                 .attr("y", ybarScale(d.y))
-                 .attr("width", xbarScale(120))
-                 .attr("height", ybarScale(20))
-                 .style("fill", freeColors[d.id]);
-               lifeMap.append("rect")
-                 .attr("x", xbarScale(d.x))
-                 .attr("y", ybarScale(d.y))
-                 .attr("width", xbarScale(120))
-                 .attr("height", ybarScale(20))
-                 .style("fill", lifeColors[d.id]);
-               eduMap.append("rect")
-                 .attr("x", xbarScale(d.x))
-                 .attr("y", ybarScale(d.y))
-                 .attr("width", xbarScale(120))
-                 .attr("height", ybarScale(20))
-                 .style("fill", eduColors[d.id]);
-              happyMap.append("text")
-                .style("font-size", "10pt")
-                .style("font-family","Tahoma")
-                .style("fill", happyColors[5])
-                .attr("x", xhbarScale(d.x + 60))
-                .attr("y", yhbarScale(d.y + 70))
-                .style("text-anchor", "middle")
-                .text(happytexts[d.id]);
-              gdpMap.append("text")
-                .style("font-size", "7pt")
-                .style("font-family","Tahoma")
-                .style("fill", gdpColors[5])
-                .attr("x", xbarScale(d.x + 60))
-                .attr("y", ybarScale(d.y + 40))
-                .style("text-anchor", "middle")
-                .text(gdptexts[d.id]);
-              freedomMap.append("text")
-                .style("font-size", "7pt")
-                .style("font-family","Tahoma")
-                .style("fill", freeColors[5])
-                .attr("x", xbarScale(d.x + 60))
-                .attr("y", ybarScale(d.y + 40))
-                .style("text-anchor", "middle")
-                .text(freetexts[d.id]);
-              lifeMap.append("text")
-                .style("font-size", "7pt")
-                .style("font-family","Tahoma")
-                .style("fill", lifeColors[5])
-                .attr("x", xbarScale(d.x + 60))
-                .attr("y", ybarScale(d.y + 40))
-                .style("text-anchor", "middle")
-                .text(lifetexts[d.id]);
-              eduMap.append("text")
-                .style("font-size", "7pt")
-                .style("font-family","Tahoma")
-                .style("fill", eduColors[5])
-                .attr("x", xbarScale(d.x + 60))
-                .attr("y", ybarScale(d.y + 40))
-                .style("text-anchor", "middle")
-                .text(edutexts[d.id]);
+        var projection = d3.geoEquirectangular();
+        var pathGenerator = d3.geoPath().projection(projection);
+        // the darker the color is, the higher the corresponding score the coutry has
+        var happyColors = ['#feedde', '#fdd0a2', '#fdae6b', '#fd8d3c', '#e6550d', '#a63603'];
+        var gdpColors = ['#99d8c9', '#66c2a4', '#41ae76', '#238b45', '#006d2c', '#00441b'];
+        var freeColors = ['#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#08519c', '#08306b'];
+        var lifeColors = ['#dadaeb', '#bcbddc', '#9e9ac8', '#807dba', '#6a51a3', '#3f007d'];
+        var eduColors = ['#fff5f0', '#fcbba1', '#fb6a4a', '#ef3b2c', '#cb181d', '#67000d'];
+        var rawData;
+        var countries;
+        d3.csv("data.csv", function(error, data) {
+            if (error) {
+                console.log(error);
+            }
+            var scores = data.map(function(d) {
+                return Number(d["Happiness Score"]);
+            });
+            var gdp_map = data.map(function(d) {
+                return Number(d["GDP per capita ($)"]);
+            });
+            var freedom = data.map(function(d) {
+                return Number(d["Freedom scores"]);
+            });
+            var life = data.map(function(d) {
+                return Number(d["Life Expendancy"]);
+            });
+            var edu_index = data.map(function(d) {
+                return Number(d["Education index"]);
             });
 
-              happyMap.append("text")
-                    .style("font-size", "10pt")
-                    .style("font-family","Tahoma")
-                    .style("fill", happyColors[5])
-                    .attr("x", xhbarScale(65))
-                    .attr("y", yhbarScale(575))
-                    .style("text-anchor", "middle")
-                    .text("Happiness Score");
-              gdpMap.append("text")
-                    .style("font-size", "7pt")
-                    .style("font-family","Tahoma")
-                    .style("fill", gdpColors[5])
-                    .attr("x", xbarScale(80))
-                    .attr("y", ybarScale(550))
-                    .style("text-anchor", "middle")
-                    .text("GDP per capita");
-              gdpMap.append("text")
-                    .style("font-size", "7pt")
-                    .style("font-family","Tahoma")
-                    .style("fill", gdpColors[5])
-                    .attr("x", xbarScale(80))
-                    .attr("y", ybarScale(565))
-                    .style("text-anchor", "middle")
-                    .text("(thousands $)");
-              freedomMap.append("text")
-                    .style("font-size", "7pt")
-                    .style("font-family","Tahoma")
-                    .style("fill", freeColors[5])
-                    .attr("x", xbarScale(80))
-                    .attr("y", ybarScale(550))
-                    .style("text-anchor", "middle")
-                    .text("Freedom Score");
-              lifeMap.append("text")
-                    .style("font-size", "7pt")
-                    .style("font-family","Tahoma")
-                    .style("fill", lifeColors[5])
-                    .attr("x", xbarScale(80))
-                    .attr("y", ybarScale(550))
-                    .style("text-anchor", "middle")
-                    .text("Life Expectancy");
-              eduMap.append("text")
-                    .style("font-size", "7pt")
-                    .style("font-family","Tahoma")
-                    .style("fill", eduColors[5])
-                    .attr("x", xbarScale(80))
-                    .attr("y", ybarScale(550))
-                    .style("text-anchor", "middle")
-                    .text("Education Index"); 
+            d3.json("world-50m.json", function(error, world) {
+                if (error) throw error;
+
+                rawData = world;
+                countries = topojson.feature(rawData, rawData.objects.countries);
+                showHappyMap(data, scores);
+                showGDPMap(data, gdp_map);
+                showFreeMap(data, freedom);
+                showLifeMap(data, life);
+                showEduMap(data, edu_index);
+                showMapScales();
+                data.forEach(function(d) {
+                    d["Happiness Score"] = +d["Happiness Score"];
+                    d["GDP per capita ($)"] = +d["GDP per capita ($)"];
+                    d["Life Expendancy"] = +d["Life Expendancy"];
+                    d["Education index"] = +d["Education index"];
+
+                });
+                var gdpExtent = d3.extent(data, function(d) {
+                    return d["GDP per capita ($)"];
+                });
+                var freedomExtent = d3.extent(data, function(d) {
+                    return d["Freedom scores"];
+                });
+                var lifeExtent = d3.extent(data, function(d) {
+                    return d["Life Expendancy"];
+                });
+                var educationExtent = d3.extent(data, function(d) {
+                    return d["Education index"];
+                });
+
+                var happinessExtent = d3.extent(data, function(d) {
+                    return d["Happiness Score"];
+                });
+
+                //Adjusting extent for axes
+                gdpExtent[0] = (gdpExtent[0] - 1) / 1000;
+                gdpExtent[1] = (gdpExtent[1] + 1) / 1000;
+
+                happinessExtent[0] = happinessExtent[0] - 1;
+                happinessExtent[1] = happinessExtent[1] + 1;
+
+                // gdp
+                var gdpScale = d3.scaleLinear().domain(gdpExtent).range([30, 425]);
+                var happinessScale = d3.scaleLinear().domain(happinessExtent).range([270, 30]);
+                var gdpAxis = d3.axisBottom(gdpScale);
+                var happinessAxis = d3.axisLeft(happinessScale);
+                var colorScale = d3.scaleOrdinal(['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a']);
+                gdpScatter.append("g").attr("transform", "translate(0, 260)").call(gdpAxis);
+                gdpScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+                gdpScatter.append("text")
+                    .text("GDP per capita ($1,000)")
+                    .attr("x", 320)
+                    .attr("y", 255)
+                    .attr("font-size", "10px");
+                gdpScatter.append("text")
+                    .text("Happiness Score")
+                    .attr("x", 5)
+                    .attr("y", 20)
+                    .attr("font-size", "10px");
+                gdpScatter.append("text")
+                    .text("Happiness Score vs. GDP per capita")
+                    .attr("x", 140)
+                    .attr("y", 20);
+                var yi = 20;
+                var legend = [];
+                data.forEach(function(d) {
+                    if (d["GDP per capita ($)"] > 0) {
+                        gdpScatter.append("circle")
+                            .attr("cx", gdpScale(d["GDP per capita ($)"] / 1000))
+                            .attr("cy", happinessScale(d["Happiness Score"]))
+                            .attr("r", 4.5)
+                            .style("stroke", "black")
+                            .style("fill", colorScale(d["Region"]))
+                            .style("border", "solid 1px black");
+                    }
+                    if (d["Country"] == "Hong Kong" || d["Country"] == "Qatar" || d["Country"] == "Singapore" || d["Country"] == "Luxembourg") {
+                        gdpScatter.append("circle")
+                            .attr("cx", gdpScale(d["GDP per capita ($)"] / 1000))
+                            .attr("cy", happinessScale(d["Happiness Score"]))
+                            .attr("r", 8)
+                            .style("stroke", "black")
+                            .attr("fill", "none");
+                    }
+                    var has = 0;
+                    for (var i = 1; i < legend.length; i++) {
+                        if (legend[i] == d["Region"]) {
+                            has = has + 1;
+                        }
+                    }
+                    if (has == 0) {
+                        legend.push(d["Region"]);
+                    }
+
+                })
+
+                // freedom
+                var freedomScale = d3.scaleLinear().domain([0, 100]).range([30, 425]);
+                var freedomAxis = d3.axisBottom(freedomScale);
+                var happinessAxis = d3.axisLeft(happinessScale);
+                var colorScale = d3.scaleOrdinal(['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a']);
+                freedomScatter.append("g").attr("transform", "translate(0, 260)").call(freedomAxis);
+                freedomScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+                freedomScatter.append("text")
+                    .text("Freedom Score")
+                    .attr("x", 360)
+                    .attr("y", 255)
+                    .attr("font-size", "10px");
+                freedomScatter.append("text")
+                    .text("Happiness Score")
+                    .attr("x", 5)
+                    .attr("y", 20)
+                    .attr("font-size", "10px");
+                freedomScatter.append("text")
+                    .text("Happiness Score vs. Freedom Score")
+                    .attr("x", 140)
+                    .attr("y", 20);
+
+                data.forEach(function(d) {
+                    if (d["Freedom scores"] > 0) {
+                        freedomScatter.append("circle")
+                            .attr("cx", freedomScale(d["Freedom scores"]))
+                            .attr("cy", happinessScale(d["Happiness Score"]))
+                            .attr("r", 4.5)
+                            .style("stroke", "black")
+                            .style("fill", colorScale(d["Region"]))
+                            .style("border", "solid 1px black");
+                    }
+                })
+
+                // life extent
+                var lifeScale = d3.scaleLinear().domain([45, 90]).range([30, 425]);
+                var lifeAxis = d3.axisBottom(lifeScale);
+                var happinessAxis = d3.axisLeft(happinessScale);
+                var colorScale = d3.scaleOrdinal(['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a']);
+                lifeScatter.append("g").attr("transform", "translate(0, 260)").call(lifeAxis);
+                lifeScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+                lifeScatter.append("text")
+                    .text("Life Expectancy")
+                    .attr("x", 360)
+                    .attr("y", 255)
+                    .attr("font-size", "10px");
+                lifeScatter.append("text")
+                    .text("Happiness Score")
+                    .attr("x", 5)
+                    .attr("y", 20)
+                    .attr("font-size", "10px");
+                lifeScatter.append("text")
+                    .text("Happiness Score vs. Life Expectancy")
+                    .attr("x", 140)
+                    .attr("y", 20);
+
+                data.forEach(function(d) {
+                    if (d["Life Expendancy"] > 0) {
+                        lifeScatter.append("circle")
+                            .attr("cx", lifeScale(d["Life Expendancy"]))
+                            .attr("cy", happinessScale(d["Happiness Score"]))
+                            .attr("r", 4.5)
+                            .style("stroke", "black")
+                            .style("fill", colorScale(d["Region"]))
+                            .style("border", "solid 1px black");
+                    }
+                    if (d["Country"] == "Somalia" || d["Country"] == "Syria") {
+                        lifeScatter.append("circle")
+                            .attr("cx", lifeScale(d["Life Expendancy"]))
+                            .attr("cy", happinessScale(d["Happiness Score"]))
+                            .attr("r", 8)
+                            .style("stroke", "black")
+                            .attr("fill", "none");
+                    }
+                })
+
+                // education
+                var educationScale = d3.scaleLinear().domain(educationExtent).range([30, 425]);
+                var educationAxis = d3.axisBottom(educationScale);
+                var happinessAxis = d3.axisLeft(happinessScale);
+                var colorScale = d3.scaleOrdinal(['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a']);
+                eduScatter.append("g").attr("transform", "translate(0, 260)").call(educationAxis);
+                eduScatter.append("g").attr("transform", "translate(30, 0)").call(happinessAxis);
+                eduScatter.append("text")
+                    .text("Education Index")
+                    .attr("x", 360)
+                    .attr("y", 255)
+                    .attr("font-size", "10px");
+                eduScatter.append("text")
+                    .text("Happiness Score")
+                    .attr("x", 5)
+                    .attr("y", 20)
+                    .attr("font-size", "10px");
+                eduScatter.append("text")
+                    .text("Happiness Score vs. Education Index")
+                    .attr("x", 140)
+                    .attr("y", 20);
+
+                data.forEach(function(d) {
+                    if (d["Education index"] > 0) {
+                        eduScatter.append("circle")
+                            .attr("cx", educationScale(d["Education index"]))
+                            .attr("cy", happinessScale(d["Happiness Score"]))
+                            .attr("r", 4.5)
+                            .style("stroke", "black")
+                            .style("fill", colorScale(d["Region"]))
+                            .style("border", "solid 1px black");
+                    }
+                    if (d["Country"] == "Somaliland Region") {
+                        eduScatter.append("circle")
+                            .attr("cx", educationScale(d["Education index"]))
+                            .attr("cy", happinessScale(d["Happiness Score"]))
+                            .attr("r", 8)
+                            .style("stroke", "black")
+                            .attr("fill", "none");
+                    }
+                })
+                var yi = 285;
+
+                for (var i = 1; i < 5; i++) {
+                    gdpScatter.append("rect")
+                        .attr("x", 10)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    gdpScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 25)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+
+                    freedomScatter.append("rect")
+                        .attr("x", 10)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    freedomScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 25)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+
+                    lifeScatter.append("rect")
+                        .attr("x", 10)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    lifeScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 25)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+
+                    eduScatter.append("rect")
+                        .attr("x", 10)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    eduScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 25)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+                    yi += 15;
                 }
-      });
 
-    });
-        
-        
+                var yi = 285;
+                for (var i = 5; i < 9; i++) {
+                    gdpScatter.append("rect")
+                        .attr("x", 175)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    gdpScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 190)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
 
+                    freedomScatter.append("rect")
+                        .attr("x", 175)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    freedomScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 190)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
 
-  
-    
-</script>
-</body>
+                    lifeScatter.append("rect")
+                        .attr("x", 175)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    lifeScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 190)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+
+                    eduScatter.append("rect")
+                        .attr("x", 175)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    eduScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 190)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+                    yi += 15;
+                }
+
+                var yi = 285;
+                for (var i = 9; i < 11; i++) {
+                    gdpScatter.append("rect")
+                        .attr("x", 325)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    gdpScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 340)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+
+                    freedomScatter.append("rect")
+                        .attr("x", 325)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    freedomScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 340)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+
+                    lifeScatter.append("rect")
+                        .attr("x", 325)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    lifeScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 340)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+
+                    eduScatter.append("rect")
+                        .attr("x", 325)
+                        .attr("y", yi)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", colorScale(legend[i]))
+                    eduScatter.append("text")
+                        .text(legend[i])
+                        .attr("x", 340)
+                        .attr("y", yi + 7)
+                        .attr("font-size", "10px");
+                    yi += 15;
+                }
+
+                function showHappyMap(happy, scores) {
+
+                    projection.fitExtent([
+                        [0, 0],
+                        [happyMap.attr("width"), happyMap.attr("height") - 10]
+                    ], countries);
+                    pathGenerator = d3.geoPath().projection(projection);
+                    var paths = happyMap.selectAll("path.country").data(countries.features);
+                    paths.enter().append("path")
+                        .attr("fill", function(country) {
+                            var colorid = find_happycolor(country.id, happy, scores);
+                            return happyColors[colorid];
+                        })
+                        .merge(paths)
+                        .attr("d", function(country) {
+                            return pathGenerator(country);
+                        });
+                }
+
+                function find_happycolor(id, happy, scores) {
+                    var colorid = 0;
+                    var happy_rank = 0;
+                    for (var i = 0; i < happy.length; i++) {
+                        if (id == happy[i].id) {
+                            happy_rank = scores[i];
+                        }
+                    }
+                    if (happy_rank >= 7) {
+                        colorid = 5;
+                    }
+                    if (happy_rank >= 6 && happy_rank < 7) {
+                        colorid = 4;
+                    }
+                    if (happy_rank >= 5 && happy_rank < 6) {
+                        colorid = 3;
+                    }
+                    if (happy_rank >= 4 && happy_rank < 5) {
+                        colorid = 2;
+                    }
+                    if (happy_rank >= 3 && happy_rank < 4) {
+                        colorid = 1;
+                    }
+                    return colorid;
+                }
+
+                function showGDPMap(data, gdp_map) {
+
+                    projection.fitExtent([
+                        [0, 0],
+                        [gdpMap.attr("width"), gdpMap.attr("height") - 10]
+                    ], countries);
+                    pathGenerator = d3.geoPath().projection(projection);
+
+                    var paths = gdpMap.selectAll("path.country").data(countries.features);
+                    paths.enter().append("path")
+                        .attr("fill", function(country) {
+                            var colorid = find_gdpcolor(country.id, data, gdp_map);
+                            return gdpColors[colorid];
+                        })
+                        .merge(paths)
+                        .attr("d", function(country) {
+                            return pathGenerator(country);
+                        });
+                }
+
+                function find_gdpcolor(id, data, gdp_map) {
+                    var colorid = 0;
+                    var gdp = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        if (id == data[i].id) {
+                            gdp = gdp_map[i];
+                        }
+                    }
+                    if (gdp <= 5000) {
+                        colorid = 0;
+                    }
+                    if (gdp <= 20000 && gdp > 5000) {
+                        colorid = 1;
+                    }
+                    if (gdp <= 35000 && gdp > 20000) {
+                        colorid = 2;
+                    }
+                    if (gdp <= 50000 && gdp > 35000) {
+                        colorid = 3;
+                    }
+                    if (gdp <= 65000 && gdp > 50000) {
+                        colorid = 4;
+                    }
+                    if (gdp > 65000) {
+                        colorid = 5;
+                    }
+                    return colorid;
+                }
+
+                function showFreeMap(free, scores) {
+                    projection.fitExtent([
+                        [0, 0],
+                        [freedomMap.attr("width"), freedomMap.attr("height") - 10]
+                    ], countries);
+                    pathGenerator = d3.geoPath().projection(projection);
+                    var paths = freedomMap.selectAll("path.country").data(countries.features);
+                    paths.enter().append("path")
+                        .attr("fill", function(country) {
+                            var colorid = find_freecolor(country.id, free, scores);
+                            return freeColors[colorid];
+                        })
+                        .merge(paths)
+                        .attr("d", function(country) {
+                            return pathGenerator(country);
+                        });
+                }
+
+                function find_freecolor(id, free, scores) {
+                    var colorid = 0;
+                    var free_score = 0;
+                    for (var i = 0; i < free.length; i++) {
+                        if (id == free[i].id) {
+                            free_score = scores[i];
+                        }
+                    }
+                    if (free_score > 90) {
+                        colorid = 5;
+                    }
+                    if (free_score > 70 && free_score <= 90) {
+                        colorid = 4;
+                    }
+                    if (free_score > 50 && free_score <= 70) {
+                        colorid = 3;
+                    }
+                    if (free_score > 30 && free_score <= 50) {
+                        colorid = 2;
+                    }
+                    if (free_score > 10 && free_score <= 30) {
+                        colorid = 1;
+                    }
+                    if (free_score <= 10) {
+                        colorid = 0;
+                    }
+                    return colorid;
+                }
+
+                function showLifeMap(life, scores) {
+
+                    projection.fitExtent([
+                        [0, 0],
+                        [lifeMap.attr("width"), lifeMap.attr("height") - 10]
+                    ], countries);
+                    pathGenerator = d3.geoPath().projection(projection);
+                    var paths = lifeMap.selectAll("path.country").data(countries.features);
+                    paths.enter().append("path")
+                        .attr("fill", function(country) {
+                            var colorid = find_lifecolor(country.id, life, scores);
+                            return lifeColors[colorid];
+                        })
+                        .merge(paths)
+                        .attr("d", function(country) {
+                            return pathGenerator(country);
+                        });
+                }
+
+                function find_lifecolor(id, life, scores) {
+                    var colorid = 0;
+                    var life_exp = 0;
+                    for (var i = 0; i < life.length; i++) {
+                        if (id == life[i].id) {
+                            life_exp = scores[i];
+                        }
+                    }
+                    if (life_exp > 80) {
+                        colorid = 5;
+                    }
+                    if (life_exp > 70 && life_exp <= 80) {
+                        colorid = 4;
+                    }
+                    if (life_exp > 65 && life_exp <= 70) {
+                        colorid = 3;
+                    }
+                    if (life_exp > 60 && life_exp <= 65) {
+                        colorid = 2;
+                    }
+                    if (life_exp > 50 && life_exp <= 60) {
+                        colorid = 1;
+                    }
+                    if (life_exp <= 50) {
+                        colorid = 0;
+                    }
+                    return colorid;
+                }
+
+                function showEduMap(edu, scores) {
+
+                    projection.fitExtent([
+                        [0, 0],
+                        [eduMap.attr("width"), eduMap.attr("height") - 10]
+                    ], countries);
+                    pathGenerator = d3.geoPath().projection(projection);
+                    var paths = eduMap.selectAll("path.country").data(countries.features);
+                    paths.enter().append("path")
+                        .attr("fill", function(country) {
+                            var colorid = find_educolor(country.id, edu, scores);
+                            return eduColors[colorid];
+                        })
+                        .merge(paths)
+                        .attr("d", function(country) {
+                            return pathGenerator(country);
+                        });
+                }
+
+                function find_educolor(id, edu, scores) {
+                    var colorid = 0;
+                    var edu_index = 0;
+                    for (var i = 0; i < edu.length; i++) {
+                        if (id == edu[i].id) {
+                            edu_index = scores[i];
+                        }
+                    }
+                    if (edu_index >= 0.8) {
+                        colorid = 5;
+                    }
+                    if (edu_index >= 0.7 && edu_index < 0.8) {
+                        colorid = 4;
+                    }
+                    if (edu_index >= 0.6 && edu_index < 0.7) {
+                        colorid = 3;
+                    }
+                    if (edu_index >= 0.5 && edu_index < 0.6) {
+                        colorid = 2;
+                    }
+                    if (edu_index >= 0.4 && edu_index < 0.5) {
+                        colorid = 1;
+                    }
+                    if (edu_index < 0.4) {
+                        colorid = 0;
+                    }
+                    return colorid;
+                }
+
+                function showMapScales() {
+                    var xbarScale = d3.scaleLinear()
+                        .domain([0, 960])
+                        .range([0, width]);
+                    var ybarScale = d3.scaleLinear()
+                        .domain([0, 600])
+                        .range([0, height]);
+                    var xhbarScale = d3.scaleLinear()
+                        .domain([0, 960])
+                        .range([0, happyWidth]);
+                    var yhbarScale = d3.scaleLinear()
+                        .domain([0, 600])
+                        .range([0, happyHeight]);
+                    var bars = [{
+                            "x": 160,
+                            "y": 530,
+                            "id": 0
+                        },
+                        {
+                            "x": 280,
+                            "y": 530,
+                            "id": 1
+                        },
+                        {
+                            "x": 400,
+                            "y": 530,
+                            "id": 2
+                        },
+                        {
+                            "x": 520,
+                            "y": 530,
+                            "id": 3
+                        },
+                        {
+                            "x": 640,
+                            "y": 530,
+                            "id": 4
+                        },
+                        {
+                            "x": 760,
+                            "y": 530,
+                            "id": 5
+                        }
+                    ];
+
+                    var happytexts = ["0 - 3", "3 - 4", "4 - 5", "5 - 6", "6 - 7", "7 - 10"];
+                    var gdptexts = ["< 5", "5 - 20", "20 - 35", "35 - 50", "50 - 65", "> 65"];
+                    var freetexts = ["< 10", "10 - 30", "30 - 50", "50 - 70", "70 - 90", " > 90"];
+                    var lifetexts = ["< 50", "50 - 60", "60 - 65", "65 - 70", "70 - 80", "> 80"]
+                    var edutexts = ["< 0.4", "0.4 - 0.5", "0.5 - 0.6", "0.6 - 0.7", "0.7 - 0.8", "> 0.8"];
+
+                    bars.forEach(function(d) {
+                        happyMap.append("rect")
+                            .attr("x", xhbarScale(d.x))
+                            .attr("y", yhbarScale(d.y + 30))
+                            .attr("width", xhbarScale(120))
+                            .attr("height", yhbarScale(20))
+                            .style("fill", happyColors[d.id]);
+                        gdpMap.append("rect")
+                            .attr("x", xbarScale(d.x))
+                            .attr("y", ybarScale(d.y))
+                            .attr("width", xbarScale(120))
+                            .attr("height", ybarScale(20))
+                            .style("fill", gdpColors[d.id]);
+                        freedomMap.append("rect")
+                            .attr("x", xbarScale(d.x))
+                            .attr("y", ybarScale(d.y))
+                            .attr("width", xbarScale(120))
+                            .attr("height", ybarScale(20))
+                            .style("fill", freeColors[d.id]);
+                        lifeMap.append("rect")
+                            .attr("x", xbarScale(d.x))
+                            .attr("y", ybarScale(d.y))
+                            .attr("width", xbarScale(120))
+                            .attr("height", ybarScale(20))
+                            .style("fill", lifeColors[d.id]);
+                        eduMap.append("rect")
+                            .attr("x", xbarScale(d.x))
+                            .attr("y", ybarScale(d.y))
+                            .attr("width", xbarScale(120))
+                            .attr("height", ybarScale(20))
+                            .style("fill", eduColors[d.id]);
+                        happyMap.append("text")
+                            .style("font-size", "10pt")
+                            .style("font-family", "Tahoma")
+                            .style("fill", happyColors[5])
+                            .attr("x", xhbarScale(d.x + 60))
+                            .attr("y", yhbarScale(d.y + 70))
+                            .style("text-anchor", "middle")
+                            .text(happytexts[d.id]);
+                        gdpMap.append("text")
+                            .style("font-size", "7pt")
+                            .style("font-family", "Tahoma")
+                            .style("fill", gdpColors[5])
+                            .attr("x", xbarScale(d.x + 60))
+                            .attr("y", ybarScale(d.y + 40))
+                            .style("text-anchor", "middle")
+                            .text(gdptexts[d.id]);
+                        freedomMap.append("text")
+                            .style("font-size", "7pt")
+                            .style("font-family", "Tahoma")
+                            .style("fill", freeColors[5])
+                            .attr("x", xbarScale(d.x + 60))
+                            .attr("y", ybarScale(d.y + 40))
+                            .style("text-anchor", "middle")
+                            .text(freetexts[d.id]);
+                        lifeMap.append("text")
+                            .style("font-size", "7pt")
+                            .style("font-family", "Tahoma")
+                            .style("fill", lifeColors[5])
+                            .attr("x", xbarScale(d.x + 60))
+                            .attr("y", ybarScale(d.y + 40))
+                            .style("text-anchor", "middle")
+                            .text(lifetexts[d.id]);
+                        eduMap.append("text")
+                            .style("font-size", "7pt")
+                            .style("font-family", "Tahoma")
+                            .style("fill", eduColors[5])
+                            .attr("x", xbarScale(d.x + 60))
+                            .attr("y", ybarScale(d.y + 40))
+                            .style("text-anchor", "middle")
+                            .text(edutexts[d.id]);
+                    });
+
+                    happyMap.append("text")
+                        .style("font-size", "10pt")
+                        .style("font-family", "Tahoma")
+                        .style("fill", happyColors[5])
+                        .attr("x", xhbarScale(65))
+                        .attr("y", yhbarScale(575))
+                        .style("text-anchor", "middle")
+                        .text("Happiness Score");
+                    gdpMap.append("text")
+                        .style("font-size", "7pt")
+                        .style("font-family", "Tahoma")
+                        .style("fill", gdpColors[5])
+                        .attr("x", xbarScale(80))
+                        .attr("y", ybarScale(550))
+                        .style("text-anchor", "middle")
+                        .text("GDP per capita");
+                    gdpMap.append("text")
+                        .style("font-size", "7pt")
+                        .style("font-family", "Tahoma")
+                        .style("fill", gdpColors[5])
+                        .attr("x", xbarScale(80))
+                        .attr("y", ybarScale(565))
+                        .style("text-anchor", "middle")
+                        .text("(thousands $)");
+                    freedomMap.append("text")
+                        .style("font-size", "7pt")
+                        .style("font-family", "Tahoma")
+                        .style("fill", freeColors[5])
+                        .attr("x", xbarScale(80))
+                        .attr("y", ybarScale(550))
+                        .style("text-anchor", "middle")
+                        .text("Freedom Score");
+                    lifeMap.append("text")
+                        .style("font-size", "7pt")
+                        .style("font-family", "Tahoma")
+                        .style("fill", lifeColors[5])
+                        .attr("x", xbarScale(80))
+                        .attr("y", ybarScale(550))
+                        .style("text-anchor", "middle")
+                        .text("Life Expectancy");
+                    eduMap.append("text")
+                        .style("font-size", "7pt")
+                        .style("font-family", "Tahoma")
+                        .style("fill", eduColors[5])
+                        .attr("x", xbarScale(80))
+                        .attr("y", ybarScale(550))
+                        .style("text-anchor", "middle")
+                        .text("Education Index");
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>
